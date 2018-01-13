@@ -1,2 +1,2 @@
 @echo off
-copy /b *.sql "../out/schema.sql"
+copy /b "./schema/*.sql" "./out/schema.sql"

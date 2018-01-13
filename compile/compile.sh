@@ -1,2 +1,2 @@
 #!/bin/sh
-cat *.sql > ../out/schema.sql
+cat ./schema/*.sql > ./out/schema.sql
