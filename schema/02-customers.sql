@@ -25,11 +25,11 @@
 create table Customers (
 	CustomerID int identity   not null,
 	Address    varchar(255)   not null
-		check (Address <> ‘’),
+		check (Address <> ''),
 	Phone      varchar(32)    not null
-		check (Phone <> ‘’),
+		check (Phone <> ''),
 	Email      varchar(255)   not null
-		check (Email LIKE ‘_%@_%._%’),
+		check (Email like '_%@_%._%'),
 	Login      varchar(64)    not null
 		check (CHAR_LENGTH(Login) > 5),
 	Password   varbinary(256) not null,
@@ -50,7 +50,7 @@ create table Companies (
 	CustomerID  int          not null,
 	NIP         char(10)     not null unique,
 	CompanyName varchar(255) not null
-		check (CompanyName <> ‘’),
+		check (CompanyName <> ''),
 	primary key (CustomerID)
 );
 
@@ -85,15 +85,15 @@ create table CompanyParticipants (
 create table StudentIDs (
 	ParticipantID int     not null,
 	StudentID     char(6) not null unique
-		check (StudentID NOT LIKE '%[^0-9]%'),
+		check (StudentID not like '%[^0-9]%'),
 	primary key (ParticipantID)
 );
 
 create table Participants (
 	ParticipantID int identity not null
 	FirstName     varchar(255) not null
-		check (FirstName <> ‘’),
+		check (FirstName <> ''),
 	LastName      varchar(255) not null
-		check (LastName <> ‘’),
+		check (LastName <> ''),
 	primary key (ParticipantID)
 );

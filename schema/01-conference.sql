@@ -8,7 +8,7 @@ create table Conferences (
 	StartDay         date          not null,
 	EndDay           date          not null,
 	ParticipantLimit int           null
-		check (ParticipantLimit is null) or (ParticipantLimit > 0),
+		check (ParticipantLimit is null or ParticipantLimit > 0),
 	StudentDiscout   decimal(3, 2) not null
 		check (StudentDiscount >= 0 and StudentDiscount <= 1)
 		default 0,

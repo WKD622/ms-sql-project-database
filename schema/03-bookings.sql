@@ -12,7 +12,7 @@ create table Bookings (
 	BookingDate date         not null
 		default getdate(),
 	DueDate     date         not null
-		default DATEADD(‘week’, 1, GETDATE()),
+		default dateadd('week', 1, getdate()),
 	PaymentDate date         null,
 	Paid        bit          not null
 		default 0,
