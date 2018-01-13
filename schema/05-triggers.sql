@@ -40,7 +40,10 @@ begin
 end
 
 /**
- * sprawdza czy dzień konferencji zawiera się w przedziale dat konferencji oraz czy już dzień ten nie jest dodany
+ * sprawdza czy dzień konferencji zawiera się w przedziale dat
+ * konferencji oraz czy już dzień ten nie jest dodany
+ * 
+ * DZIAŁA
  */
 create trigger ConferenceDayValidity
 	on ConferenceDays
