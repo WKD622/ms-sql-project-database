@@ -1,4 +1,30 @@
+/*
+ * Moduł schematu bazy danych odpowiedzialny za przechowywanie
+ * informacji o konferencjach.
+ * 
+ * @author Kamil Jarosz
+ * @author Jakub Ziarko
+ */
 
+/**
+ * Tabela przechowująca dane o konferencjach. Każdy wiersz to
+ * osobna konferencja.
+ * 
+ * @column ConferenceID
+ *             ID konferencji
+ * @column Name
+ *             nazwa konferencji
+ * @column Price
+ *             cena za dzień konferencji
+ * @column StartDay
+ *             dzień rozpoczęcia konferencji
+ * @column EndDay
+ *             dzień zakończenia konferencji
+ * @column ParticipantLimit
+ *             limit ilości osób na jeden dzień konferencji
+ * @column StudentDiscout
+ *             wartość zniżki studenckiej
+ */
 create table Conferences (
 	ConferenceID     int identity  not null,
 	Name             varchar(255)  not null
@@ -17,6 +43,18 @@ create table Conferences (
 		check (EndDay > StartDay)
 );
 
+/**
+ * Tabela przechowująca dane o dniach konferencji. Każdy dzień
+ * konferencji odnosi się do danej konferencji, jest unikalny oraz
+ * zawiera się w przedziale między {@link StartDay} a {@link EndDay}.
+ * 
+ * @column ConferenceDayID
+ *             ID dnia konferencji
+ * @column ConferenceID
+ *             ID konferencji, do której się odnosi ten dzień
+ * @column Day
+ *             dany dzień konferencji
+ */
 create table ConferenceDays (
 	ConferenceDayID int identity not null,
 	ConferenceID    int          not null,
@@ -24,6 +62,16 @@ create table ConferenceDays (
 	primary key (ConferenceDayID)
 );
 
+/**
+ * Tabela przechowująca dane o warsztatach.
+ * 
+ * @column ConferenceDayID
+ *             ID dnia konferencji
+ * @column ConferenceID
+ *             ID konferencji, do której się odnosi ten dzień
+ * @column Day
+ *             dany dzień konferencji
+ */
 create table Workshops (
 	WorkshopID  int identity not null,
 	Name        varchar(255) not null
@@ -31,8 +79,6 @@ create table Workshops (
 	Description varchar(255) null
 		check (Description is null or Description <> ''),
 	primary key (WorkshopID)
-
-	
 );
 
 create table WorkshopTerms (
