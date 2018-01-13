@@ -1,25 +1,35 @@
 
 create table BookingStudentIDs (
 	DayBookingID int     not null,
-	StudentID    char(6) not null unique,
+	StudentID    char(6) not null unique
+		check (StudentID NOT LIKE '%[^0-9]%'),
 	primary key (DayBookingID)
 );
 
 create table Bookings (
 	BookingID   int identity not null,
 	CustomerID  int          not null,
-	BookingDate date         not null,
-	DueDate     date         not null,
+	BookingDate date         not null
+		default getdate(),
+	DueDate     date         not null
+		default DATEADD(‘week’, 1, GETDATE()),
 	PaymentDate date         null,
-	Paid        bit          not null,
+	Paid        bit          not null
+		default 0,
 	primary key (BookingID)
+	constraint BookingDue
+		check (BookingDate < DueDate)
+	constraint BookingPayment
+		check ((PaymentDate is null) or (BookingDate <= PaymentDate))
 );
 
 create table WorkshopBookings (
 	WorkshopBookingID int identity not null,
 	WorkshopTermID    int          not null,
 	DayBookingID      int          not null,
-	Participants      int          not null,
+	Participants      int          not null
+		check (Participants > 0)
+		default 1,
 	primary key (WorkshopBookingID)
 );
 
@@ -30,10 +40,13 @@ create table DayBookingDetails (
 );
 
 create table DayBookings (
-	DayBookingID    int identity not null,
+	DayBookingID    int identity not null
+		check (Participants > 0),
 	BookingID       int          not null,
 	ConferenceDayID int          not null,
-	Participants    int          not null,
+	Participants    int          not null
+		check (Participants > 0)
+		default 1,
 	primary key (DayBookingID)
 );
 
