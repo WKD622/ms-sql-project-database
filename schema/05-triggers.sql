@@ -97,7 +97,8 @@ end
 go
 
 /**
- * Dla osoby fizycznej wymaga żeby było Participants = 1.
+ * Dla osoby fizycznej w rezerwacji dnia
+ * wymaga żeby było Participants = 1.
  */
 create trigger DayBookingParticipants
 	on DayBookings
@@ -117,7 +118,8 @@ end
 go
 
 /**
- * Dla osoby fizycznej wymaga żeby było Participants = 1.
+ * Dla osoby fizycznej w rezerwacji warsztatu wymaga
+ * żeby było Participants = 1.
  */
 create trigger WorkshopBookingParticipants
 	on WorkshopBookings
@@ -137,4 +139,3 @@ begin
 	end
 end
 go
-

@@ -93,3 +93,42 @@ create view UnpaidBookings as
 		from Bookings
 		where PaymentDate is null and getdate() > DueDate;
 go
+
+create view WorkshopBookingsSummary as
+	select
+			wbd.ParticipantID,
+			w.WorkshopID,
+			w.Name,
+			w.Description,
+			wt.Day,
+			wt.Start,
+			wt.End,
+			(case when PaymentDate is null 0 else 1 end)
+				as Paid
+		from Workshops as w
+			inner join WorkshopTerms as wt
+				on wt.WorkshopID = w.WorkshopID
+			inner join WorkshopBookings as wb
+				on wb.WorkshopTermID = wt.WorkshopTermID
+			inner join WorkshopBookingDetails as wbd
+				on wbd.WorkshopBookingID = wb.WorkshopBookingID;
+go
+
+create view WorkshopsSummary as
+	select
+			WorkshopID,
+			WorkshopTermID,
+			Name,
+			Description,
+			Day,
+			Start,
+			End,
+			(sum(Participants)) as Enrolled,
+			(sum(Participants)/Capacity*100) as PercentEnrolled
+		from Workshops as w
+			inner join WorkshopTerms as wt
+				on wt.WorkshopID = w.WorkshopID
+			inner join WorkshopBookings as wb
+				on wb.WorkshopTermID = wt.WorkshopTermID
+		group by WorkshopID, Name, Description, Day, Start, End, WorkshopTermID;
+go

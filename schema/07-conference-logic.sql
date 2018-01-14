@@ -68,7 +68,7 @@ create procedure addConference (
 go
 
 /**
- * Dodaje warsztat
+ * Dodaje warsztat.
  */
 create procedure addWorkshop (
 	@name        varchar(255),
@@ -122,8 +122,9 @@ go
 
 /**
  * Zwraca ilość wolnych miejsc dla danego dnia konferencji.
+ * Zwraca {@code null} gdy ilość miejsc jest nieograniczona.
  */
-create function getAvailablePlacesForDay(
+create function getAvailableSpacesForDay(
 	@conferenceDayID int
 ) returns int
 as
@@ -145,8 +146,9 @@ go
 
 /**
  * Zwraca ilość wolnych miejsc dla danego terminu warsztatu.
+ * Zwraca {@code null} gdy ilość miejsc jest nieograniczona.
  */
-create function getAvailablePlacesForWorkshop(
+create function getAvailableSpacesForWorkshop(
 	@workshopTermID int
 ) returns int
 as
@@ -165,7 +167,7 @@ end
 go
 
 /**
- * Zwraca ConferenceID dla podanej nazwy konferencji
+ * Zwraca ConferenceID dla podanej nazwy konferencji.
  */
 create function getConferenceForName(
 	@name varchar(255)
@@ -183,7 +185,7 @@ end
 go
 
 /**
- * Zwraca WorkshopID dla podanej nazwy warsztatu 
+ * Zwraca WorkshopID dla podanej nazwy warsztatu.
  */
 create function getWorkshopForName(
 	@name varchar(255)
