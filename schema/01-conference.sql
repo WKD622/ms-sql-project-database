@@ -131,7 +131,7 @@ create table WorkshopTerms (
 create table Prices (
 	PriceID      int identity  not null,
 	ConferenceID int           not null,
-	DueDate      date          not null,
+	Till         date          not null,
 	Discount     decimal(3, 2) not null
 		check (Discount >= 0 and Discount <= 1),
 	primary key (PriceID)
