@@ -6,7 +6,8 @@
  */
 
 /**
- * widok rezerwacji, które nie zostały zapłacone w terminie, posortowane według terminu płatności
+ * Widok rezerwacji, które nie zostały zapłacone w terminie,
+ * posortowane według terminu płatności.
  */
 create view UnpaidBookings as
 	select * from Bookings
