@@ -41,9 +41,10 @@ end
 go
 
 /**
- * sprawdza czy dzień konferencji zawiera się w przedziale dat
- * konferencji <s>oraz czy już dzień ten nie jest dodany</s>
- * sprawdzanie czy dzień jest dodany jest w unique
+ * Sprawdza czy dzień konferencji zawiera się w
+ * terminie konferencji.
+ * 
+ * @tested
  */
 create trigger ConferenceDayValidate
 	on ConferenceDays
@@ -56,17 +57,6 @@ begin
 	declare @day date;
 	select @day = Day
 		from inserted;
-	
-	/*declare @cnt int;
-	select @cnt = count(*)
-		from ConferenceDays
-		where Day = @day;
-	
-	if (@cnt > 0)
-	begin
-		print 'Conference day already added';
-		rollback;
-	end*/
 	
 	declare @from date;
 	declare @to date;

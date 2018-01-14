@@ -115,7 +115,7 @@ create function getAvailablePlacesForWorkshop(
 as
 begin
 	declare @available as int;
-	select @available = (wt.Capacity - isnull(sum(wb.Participants), 0)
+	select @available = (wt.Capacity - isnull(sum(wb.Participants), 0))
 		from WorkshopTerms as wt
 			left join WorkshopBookings as wb
 				on wb.WorkshopTermID = wt.WorkshopTermID

@@ -49,7 +49,7 @@ go
  */
 create procedure addPerson (
 	@firstName varchar(255),
-	@lastName  char(10),
+	@lastName  varchar(255),
 	@address   varchar(255),
 	@phone     varchar(32),
 	@email     varchar(255),
@@ -83,6 +83,42 @@ create procedure addPerson (
 			ParticipantID, CustomerID
 		) values (
 			@pid, @cid
+		);
+		
+		if @studentID is not null
+		begin
+			insert into StudentIDs (
+				ParticipantID, StudentID
+			) values (
+				@pid, @studentID
+			);
+		end
+	commit transaction;
+go
+
+/**
+ * Dodaje uczestnika z danej firmy.
+ */
+create procedure addCompanyParticipant (
+	@companyID int,
+	@firstName varchar(255),
+	@lastName  varchar(255),
+	@studentID char(6) = null
+) as
+	set xact_abort on;
+	begin transaction;
+		insert into Participants (
+			FirstName, LastName
+		) values (
+			@firstName, @lastName
+		);
+		
+		declare @pid int = scope_identity();
+		
+		insert into CompanyParticipants (
+			ParticipantID, CompanyID
+		) values (
+			@pid, @companyID
 		);
 		
 		if @studentID is not null
