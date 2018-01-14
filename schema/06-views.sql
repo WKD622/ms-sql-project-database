@@ -45,11 +45,11 @@ create view ActiveCustomers as
 			cs.CustomerID,
 			cs.IsCompany,
 			cs.Name,
-			(count(distinct DayBookingID))
+			(count(distinct db.DayBookingID))
 				as DayBookingsCount,
-			(count(distinct WorkshopBookinngID))
+			(count(distinct wb.WorkshopBookingID))
 				as WorkshopBookingsCount,
-			(count(distinct DayBookingID) + count(distinct WorkshopBookinngID))
+			(count(distinct db.DayBookingID) + count(distinct wb.WorkshopBookingID))
 				as BookingsCount
 		from CustomersSummary as cs
 			left join Bookings as b

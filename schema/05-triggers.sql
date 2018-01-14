@@ -45,7 +45,7 @@ go
  * konferencji <s>oraz czy już dzień ten nie jest dodany</s>
  * sprawdzanie czy dzień jest dodany jest w unique
  */
-create trigger ConferenceDayValidity
+create trigger ConferenceDayValidate
 	on ConferenceDays
 	for insert as
 begin
