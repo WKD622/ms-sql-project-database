@@ -31,6 +31,23 @@ create procedure addConference (
 go
 
 /**
+ * Dodaje próg cenowy dla konferencji.
+ */
+create procedure addConferencePrice (
+	@confid   int,
+	@till     date,
+	@discount decimal(3, 2)
+) as
+	insert into Prices (
+		ConferenceID,
+		Till, Discount
+	) values (
+		@confid, @till,
+		@discount
+	);
+go
+
+/**
  * Zwraca ilość wolnych miejsc dla danego dnia konferencji.
  */
 create function getAvailablePlacesForDay(
