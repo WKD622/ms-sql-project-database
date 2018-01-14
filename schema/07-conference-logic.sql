@@ -72,7 +72,7 @@ go
  */
 create procedure addWorkshop (
 	@name             varchar(255),
-	@description	  varchar(255)
+	@description	  varchar(255) = null
 ) as
 	set xact_abort on;
 	begin transaction;
