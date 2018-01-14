@@ -71,8 +71,8 @@ go
  * Dodaje warsztat
  */
 create procedure addWorkshop (
-	@name             varchar(255),
-	@description	  varchar(255) = null
+	@name        varchar(255),
+	@description varchar(255) = null
 ) as
 	set xact_abort on;
 	begin transaction;
@@ -88,12 +88,12 @@ go
  * Dodaje instancję wybranego warsztatu
  */
 create procedure addWorkshopTerms (
-	@workshopID       int,
-	@dayID			  int,
-	@price 			  money,
-	@start 			  time,
-	@end 			  time,
-	@capacity		  int
+	@workshopID int,
+	@dayID      int,
+	@price      money,
+	@start      time,
+	@end        time,
+	@capacity   int
 ) as
 	set xact_abort on;
 	begin transaction;

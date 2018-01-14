@@ -31,4 +31,3 @@ create procedure setPaid (
 		end
 	commit transaction;
 go
-
