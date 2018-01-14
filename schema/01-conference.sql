@@ -67,7 +67,7 @@ create table ConferenceDays (
 	Day             date         not null,
 	primary key (ConferenceDayID),
 	constraint UniqueConferenceDay
-		unique (ConferenceDayID, Day)
+		unique (ConferenceID, Day)
 );
 
 /**
