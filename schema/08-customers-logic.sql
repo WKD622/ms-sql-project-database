@@ -131,3 +131,12 @@ create procedure addCompanyParticipant (
 		end
 	commit transaction;
 go
+
+create function isPerson (
+	@customerID int
+) returns bit
+as
+begin
+	return exists (select * from Persons where CustomerID = @customerID);
+end
+go
