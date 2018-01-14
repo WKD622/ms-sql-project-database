@@ -132,16 +132,4 @@ create procedure addCompanyParticipant (
 	commit transaction;
 go
 
-create procedure addConferenceDay (
-	@conferenceID int,
-	@day date
-) as
-	set xact_abort on;
-	begin transaction;
-		inser into Conferences (
-			ConferenceID, Day
-		) vaules (
-			@conferenceID, @day
-		);
-
 
