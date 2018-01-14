@@ -48,7 +48,8 @@ create table Customers (
  */
 create table Companies (
 	CustomerID  int          not null,
-	NIP         char(10)     not null unique,
+	NIP         char(10)     not null unique
+		check (NIP not like '%[^0-9]%'),
 	CompanyName varchar(255) not null
 		check (CompanyName <> ''),
 	primary key (CustomerID)
