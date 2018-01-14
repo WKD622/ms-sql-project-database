@@ -10,25 +10,11 @@
  * Ustawia datę wykonania płatności dla wybranego zamówienia.
  */
 create procedure setPaid (
-	@bookingID    int,
-	@paymentDate  date = null;
+	@bookingID int
 ) as
-	set xact_abort on;
-	begin transaction;
-		if @paymentDate is not null
-		begin
-			update Bookings
-				set PaymentDate = @paymentDate
-				where BookingID = @bookingID;
-		end
-		
-		if @paymentDate is null
-		begin
-			update Bookings
-				set PaymentDate = getdate()
-				where BookingID = @bookingID;
-		end
-	commit transaction;
+	update Bookings
+		set PaymentDate = getdate()
+		where BookingID = @bookingID;
 go
 
 /**
@@ -37,15 +23,12 @@ go
 create procedure addBooking (
 	@customerID int
 ) as
-	declare @bookingDate date = getdate();
-	declare @dueDate date = dateadd(day, 7, @bookingDate);
-	
 	insert into DayBookings (
 		CustomerID, BookingDate,
 		DueDate, PaymentDate
 	) values (
-		@customerID, @bookingDate,
-		@dueDate, null
+		@customerID, default,
+		default, null
 	);
 go
 
@@ -54,14 +37,14 @@ go
  */
 create procedure addDayBooking (
 	@bookingID       int,
-	@conferencedayID int,
-	@participants    int
+	@conferenceDayID int,
+	@participants    int = 1
 ) as
 	insert into DayBookings (
 		BookingID, ConferenceDayID,
 		Participants
 	) values (
-		@bookingID, @conferencedayID,
+		@bookingID, @conferenceDayID,
 		@participants
 	);
 go
