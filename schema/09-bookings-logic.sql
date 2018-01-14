@@ -31,13 +31,12 @@ create procedure setPaid (
 	commit transaction;
 go
 
-
 /**
- * Dodaje Booking
+ * Dodaje zamówienie.
  */
-create procedure addBookings (
-	@customerID      int
-) as 
+create procedure addBooking (
+	@customerID int
+) as
 	set xact_abort on;
 	begin transaction
 		declare @bookingDate date = getdate();
@@ -55,13 +54,13 @@ create procedure addBookings (
 go
 
 /**
- * Dodaje dayBooking
+ * Dodaje rezerwację dnia.
  */
 create procedure addDayBooking (
 	@bookingID       int,
 	@conferencedayID int,
 	@participants    int
-) as 
+) as
 	set xact_abort on;
 	begin transaction
 		insert into DayBookings (
@@ -75,13 +74,13 @@ create procedure addDayBooking (
 go
 
 /**
- * Dodaje WorkshopBooking 
- */ 
+ * Dodaje rezerwację warsztatu. 
+ */
 create procedure addWorkshopBooking(
-	@workshopTermID    int,
-	@dayBookingID      int,
-	@participants      int
-) as 
+	@workshopTermID int,
+	@dayBookingID   int,
+	@participants   int
+) as
 	set xact_abort on;
 	begin transaction
 		insert into WorkshopBookings (

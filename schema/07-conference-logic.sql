@@ -74,20 +74,17 @@ create procedure addWorkshop (
 	@name        varchar(255),
 	@description varchar(255) = null
 ) as
-	set xact_abort on;
-	begin transaction;
-		insert into Workshops (
-			Name, Description
-		) values (
-			@name, @description
-		);
-	commit transaction
+	insert into Workshops (
+		Name, Description
+	) values (
+		@name, @description
+	);
 go
 
 /**
- * Dodaje instancję wybranego warsztatu
+ * Dodaje instancję wybranego warsztatu.
  */
-create procedure addWorkshopTerms (
+create procedure addWorkshopTerm (
 	@workshopID int,
 	@dayID      int,
 	@price      money,
@@ -95,20 +92,17 @@ create procedure addWorkshopTerms (
 	@end        time,
 	@capacity   int
 ) as
-	set xact_abort on;
-	begin transaction;
-		insert into WorkshopTerms (
-			WorkshopID, DayID,
-			Price, Start,
-			End, Capacity
-		) values (
-			@workshopID, @dayID,
-			@price, @start,
-			@end, @capacity
-		)
-	commit transaction
+	insert into WorkshopTerms (
+		WorkshopID, DayID,
+		Price, Start,
+		End, Capacity
+	) values (
+		@workshopID, @dayID,
+		@price, @start,
+		@end, @capacity
+	);
 go
-	
+
 /**
  * Dodaje próg cenowy dla konferencji.
  */
@@ -135,6 +129,7 @@ create function getAvailablePlacesForDay(
 as
 begin
 	declare @available as int;
+	
 	select @available = (c.ParticipantLimit - isnull(sum(db.Participants), 0))
 		from Conferences as c
 			inner join ConferenceDays as cd
@@ -157,6 +152,7 @@ create function getAvailablePlacesForWorkshop(
 as
 begin
 	declare @available as int;
+	
 	select @available = (wt.Capacity - isnull(sum(wb.Participants), 0))
 		from WorkshopTerms as wt
 			left join WorkshopBookings as wb
@@ -177,10 +173,12 @@ create function getConferenceForName(
 as
 begin
 	declare @conferenceID as int;
+	
 	select @conferenceID = c.conferenceID
 		from Conferences as c
-		where c.Name = @name
-	return @conferenceID
+		where c.Name = @name;
+	
+	return @conferenceID;
 end
 go
 
@@ -193,9 +191,11 @@ create function getWorkshopForName(
 as
 begin
 	declare @workshopID as int;
+	
 	select @workshopID = w.WorkshopID
 		from Workshops as w
-		where w.Name = @name
-	return @workshopID
+		where w.Name = @name;
+	
+	return @workshopID;
 end
 go
