@@ -112,7 +112,3 @@ begin
 	return @available;
 end
 go
-
-create function getInvoici (
-	@bookingID int
-) returns 
