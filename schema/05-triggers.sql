@@ -70,3 +70,31 @@ begin
 	end
 end
 go
+
+/**
+ * Nie pozwala usunąć zamówienia, które jest
+ * opłacone.
+ */
+create trigger DeleteBookingAfterPayment
+	on Bookings
+	for delete as
+begin
+	declare @bokingid int;
+	select @bokingid = BookingID
+		from deleted;
+	
+	declare @paymentDate date;
+	select @paymentDate = PaymentDate
+		from Bookings
+		where BookingID = @bookingID;
+	
+	if @paymetDate is not null
+	begin
+		print 'Cannot delete a paid booking';
+		rollback;
+	end
+	
+	delete Bookings
+		where BookingID = @bookingID;
+end
+go
