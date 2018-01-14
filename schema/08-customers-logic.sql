@@ -139,7 +139,7 @@ as
 begin
 	if exists (select * from Persons where CustomerID = @customerID)
 		return 1
-	else
-		return 0
+	
+	return 0
 end
 go

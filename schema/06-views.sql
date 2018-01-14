@@ -103,7 +103,7 @@ create view WorkshopBookingsSummary as
 			wt.Day,
 			wt.StartTime,
 			wt.EndTime,
-			(case when PaymentDate is null 0 else 1 end)
+			(case when PaymentDate is null then 0 else 1 end)
 				as Paid
 		from Workshops as w
 			inner join WorkshopTerms as wt

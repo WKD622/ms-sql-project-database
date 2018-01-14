@@ -71,7 +71,7 @@ create function generateInvoice (
 ) returns table
 as
 begin
-	declare @ret table = (select
+	return (select
 			'Day' as Product,
 			Day as Date,
 			null as Time,
@@ -81,8 +81,5 @@ begin
 		from DayBookings as db
 			inner join ConferenceDays as cd
 				on cd.ConferenceDayID = db.ConferenceDayID
-		where BookingID = @bookingID)
-		/*union ...*/;
-	
-	return @ret;
+		where BookingID = @bookingID);
 end
