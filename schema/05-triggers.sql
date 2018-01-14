@@ -109,7 +109,7 @@ begin
 		from Bookings
 		where BookingID = (select BookingID from inserted);
 	
-	if isPerson(@customerID) and (select Participants from inserted) <> 1
+	if isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
 	begin
 		print 'A person may only book one place'
 		rollback;
@@ -132,7 +132,7 @@ begin
 				on db.BookingID = b.BookingID
 		where DayBookingID = (select DayBookingID from inserted);
 	
-	if isPerson(@customerID) and (select Participants from inserted) <> 1
+	if isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
 	begin
 		print 'A person may only book one place'
 		rollback;

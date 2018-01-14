@@ -101,8 +101,8 @@ create view WorkshopBookingsSummary as
 			w.Name,
 			w.Description,
 			wt.Day,
-			wt.Start,
-			wt.End,
+			wt.StartTime,
+			wt.EndTime,
 			(case when PaymentDate is null 0 else 1 end)
 				as Paid
 		from Workshops as w
@@ -121,8 +121,8 @@ create view WorkshopsSummary as
 			Name,
 			Description,
 			Day,
-			Start,
-			End,
+			StartTime,
+			EndTime,
 			(sum(Participants)) as Enrolled,
 			(sum(Participants)/Capacity*100) as PercentEnrolled
 		from Workshops as w
@@ -130,5 +130,5 @@ create view WorkshopsSummary as
 				on wt.WorkshopID = w.WorkshopID
 			inner join WorkshopBookings as wb
 				on wb.WorkshopTermID = wt.WorkshopTermID
-		group by WorkshopID, Name, Description, Day, Start, End, WorkshopTermID;
+		group by WorkshopID, Name, Description, Day, StartTime, EndTime, WorkshopTermID;
 go

@@ -88,18 +88,18 @@ create procedure addWorkshopTerm (
 	@workshopID int,
 	@dayID      int,
 	@price      money,
-	@start      time,
-	@end        time,
+	@startTime  time,
+	@endTime    time,
 	@capacity   int
 ) as
 	insert into WorkshopTerms (
 		WorkshopID, DayID,
-		Price, Start,
-		End, Capacity
+		Price, StartTime,
+		EndTime, Capacity
 	) values (
 		@workshopID, @dayID,
-		@price, @start,
-		@end, @capacity
+		@price, @startTime,
+		@endTime, @capacity
 	);
 go
 

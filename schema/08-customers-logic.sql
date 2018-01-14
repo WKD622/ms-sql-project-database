@@ -137,6 +137,9 @@ create function isPerson (
 ) returns bit
 as
 begin
-	return exists (select * from Persons where CustomerID = @customerID);
+	if exists (select * from Persons where CustomerID = @customerID)
+		return 1
+	else
+		return 0
 end
 go

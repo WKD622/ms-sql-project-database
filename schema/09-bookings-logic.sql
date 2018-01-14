@@ -66,21 +66,23 @@ create procedure addWorkshopBooking (
 	);
 go
 
-create function getAvailablePlacesForDay(
-	@conferenceDayID int
-) returns int
+create function generateInvoice (
+	@bookingID int
+) returns table
 as
 begin
-	declare @available as int;
-	select @available = (c.ParticipantLimit - isnull(sum(db.Participants), 0))
-		from Conferences as c
+	declare @ret table = (select
+			'Day' as Product,
+			Day as Date,
+			null as Time,
+			Participants as Spaces,
+			(getDayBookingPrice(DayBookingID))
+				as Price
+		from DayBookings as db
 			inner join ConferenceDays as cd
-				on cd.ConferenceID = c.ConferenceID
-			left join DayBookings as db
-				on db.ConferenceDayID = cd.ConferenceDayID
-		where cd.ConferenceDayID = @conferenceDayID
-		group by c.ParticipantLimit, cd.ConferenceDayID;
+				on cd.ConferenceDayID = db.ConferenceDayID
+		where BookingID = @bookingID)
+		/*union ...*/;
 	
-	return @available;
+	return @ret;
 end
-go
