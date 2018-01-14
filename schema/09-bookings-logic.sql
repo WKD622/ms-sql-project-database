@@ -11,19 +11,18 @@
  */
 create procedure setPaid (
 	@bookingID    int,
-	@paymentDate  date,
-	@todaysDate   date = null
+	@paymentDate  date = null;
 ) as
 	set xact_abort on;
 	begin transaction;
-		if @todaysDate is not null
+		if @paymentDate is not null
 		begin
 			update Bookings
 				set PaymentDate = @paymentDate
 				where BookingID = @bookingID;
 		end
 		
-		if @todaysDate is null
+		if @paymentDate is null
 		begin
 			update Bookings
 				set PaymentDate = getdate() 
@@ -78,7 +77,7 @@ go
 /**
  * Dodaje WorkshopBooking 
  */ 
- create procedure addWorkshopBooking(
+create procedure addWorkshopBooking(
 	@workshopTermID    int,
 	@dayBookingID      int,
 	@participants      int
@@ -94,3 +93,26 @@ go
 		);
 	commit transaction
 go
+
+create function getAvailablePlacesForDay(
+	@conferenceDayID int
+) returns int
+as
+begin
+	declare @available as int;
+	select @available = (c.ParticipantLimit - isnull(sum(db.Participants), 0))
+		from Conferences as c
+			inner join ConferenceDays as cd
+				on cd.ConferenceID = c.ConferenceID
+			left join DayBookings as db
+				on db.ConferenceDayID = cd.ConferenceDayID
+		where cd.ConferenceDayID = @conferenceDayID
+		group by c.ParticipantLimit, cd.ConferenceDayID;
+	
+	return @available;
+end
+go
+
+create function getInvoici (
+	@bookingID int
+) returns 
