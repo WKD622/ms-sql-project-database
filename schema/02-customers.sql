@@ -10,17 +10,17 @@
  * Tabela przechowująca dane klientów.
  * 
  * @column CustomerID
- *             ID klienta
+ *     ID klienta
  * @column Address
- *             adres klienta w formie czytelnej dla człowieka
+ *     adres klienta w formie czytelnej dla człowieka
  * @column Phone
- *             numer telefonu klienta w postaci czytelnej dla człowieka
+ *     numer telefonu klienta w postaci czytelnej dla człowieka
  * @column Email
- *             adres email klienta
+ *     adres email klienta
  * @column Login
- *             login klienta
+ *     login klienta
  * @column Password
- *             hasło do konta w postaci hashowanej
+ *     hasło do konta w postaci hashowanej
  */
 create table Customers (
 	CustomerID int identity   not null,
@@ -40,11 +40,11 @@ create table Customers (
  * Tabela przechowująca dane klientów -- firm.
  * 
  * @column CustomerID
- *             ID klienta, identyczne z {@link Customers.CustomerID}
+ *     ID klienta, identyczne z {@link Customers.CustomerID}
  * @column NIP
- *             numer identyfikacji podatkowej firmy
+ *     numer identyfikacji podatkowej firmy
  * @column CompanyName
- *             nazwa firmy
+ *     nazwa firmy
  */
 create table Companies (
 	CustomerID  int          not null,
@@ -58,9 +58,9 @@ create table Companies (
  * Tabela przechowująca dane klientów -- osób fizycznych.
  * 
  * @column CustomerID
- *             ID klienta, identyczne z {@link Customers.CustomerID}
+ *     ID klienta, identyczne z {@link Customers.CustomerID}
  * @column ParticipantID
- *             ID uczestnika
+ *     ID uczestnika
  */
 create table Persons (
 	CustomerID    int not null unique,
@@ -72,9 +72,9 @@ create table Persons (
  * Tabela przechowująca dane uczestników (delegatów) z danej firmy.
  * 
  * @column CustomerID
- *             ID firmy
+ *     ID firmy
  * @column ParticipantID
- *             ID uczestnika
+ *     ID uczestnika
  */
 create table CompanyParticipants (
 	CompanyID     int not null,

@@ -1,3 +1,10 @@
+/*
+ * Moduł schematu bazy danych odpowiedzialny za przechowywanie
+ * informacji o zamówieniach.
+ * 
+ * @author Kamil Jarosz
+ * @author Jakub Ziarko
+ */
 
 create table BookingStudentIDs (
 	DayBookingID int     not null,

@@ -41,7 +41,8 @@ end
 
 /**
  * sprawdza czy dzień konferencji zawiera się w przedziale dat
- * konferencji oraz czy już dzień ten nie jest dodany
+ * konferencji <s>oraz czy już dzień ten nie jest dodany</s>
+ * sprawdzanie czy dzień jest dodany jest w unique
  * 
  * DZIAŁA
  */
@@ -57,7 +58,7 @@ begin
 	select @day = Day
 		from inserted;
 	
-	declare @cnt int;
+	/*declare @cnt int;
 	select @cnt = count(*)
 		from ConferenceDays
 		where Day = @day;
@@ -66,7 +67,7 @@ begin
 	begin
 		print 'Conference day already added';
 		rollback;
-	end
+	end*/
 	
 	declare @from date;
 	declare @to date;
