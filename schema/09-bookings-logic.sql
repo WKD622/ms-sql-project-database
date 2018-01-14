@@ -7,7 +7,7 @@
  */
 
 /**
- * Ustawia datę wykonania płatności dla wybranego BookingID 
+ * Ustawia datę wykonania płatności dla wybranego zamówienia.
  */
 create procedure setPaid (
 	@bookingID    int,
@@ -25,7 +25,7 @@ create procedure setPaid (
 		if @paymentDate is null
 		begin
 			update Bookings
-				set PaymentDate = getdate() 
+				set PaymentDate = getdate()
 				where BookingID = @bookingID;
 		end
 	commit transaction;
@@ -37,20 +37,16 @@ go
 create procedure addBooking (
 	@customerID int
 ) as
-	set xact_abort on;
-	begin transaction
-		declare @bookingDate date = getdate();
-		declare @dueDate date = dateadd(day, 7, @bookingDate);
-		declare @paymentDate date = null;
-		
-		insert into DayBookings (
-			CustomerID, BookingDate,
-			DueDate, PaymentDate
-		) values (
-			@customerID, @bookingDate,
-			@dueDate, @paymentDate
-		);
-	commit transaction
+	declare @bookingDate date = getdate();
+	declare @dueDate date = dateadd(day, 7, @bookingDate);
+	
+	insert into DayBookings (
+		CustomerID, BookingDate,
+		DueDate, PaymentDate
+	) values (
+		@customerID, @bookingDate,
+		@dueDate, null
+	);
 go
 
 /**
@@ -61,36 +57,30 @@ create procedure addDayBooking (
 	@conferencedayID int,
 	@participants    int
 ) as
-	set xact_abort on;
-	begin transaction
-		insert into DayBookings (
-			BookingID, ConferenceDayID,
-			Participants
-		) values (
-			@bookingID, @conferencedayID,
-			@participants
-		);
-	commit transaction
+	insert into DayBookings (
+		BookingID, ConferenceDayID,
+		Participants
+	) values (
+		@bookingID, @conferencedayID,
+		@participants
+	);
 go
 
 /**
- * Dodaje rezerwację warsztatu. 
+ * Dodaje rezerwację warsztatu.
  */
-create procedure addWorkshopBooking(
+create procedure addWorkshopBooking (
 	@workshopTermID int,
 	@dayBookingID   int,
 	@participants   int
 ) as
-	set xact_abort on;
-	begin transaction
-		insert into WorkshopBookings (
-			WorkshopTermID, DayBookingID,
-			Participants
-		) values (
-			@workshopTermID, @dayBookingID,
-			@participants
-		);
-	commit transaction
+	insert into WorkshopBookings (
+		WorkshopTermID, DayBookingID,
+		Participants
+	) values (
+		@workshopTermID, @dayBookingID,
+		@participants
+	);
 go
 
 create function getAvailablePlacesForDay(
