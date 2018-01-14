@@ -132,3 +132,19 @@ create view WorkshopsSummary as
 				on wb.WorkshopTermID = wt.WorkshopTermID
 		group by WorkshopID, Name, Description, Day, StartTime, EndTime, WorkshopTermID;
 go
+
+create view WorkshopParticipantLists as
+	select
+			WorkshopTermID,
+			Name,
+			ParticipantID,
+			FirstName,
+			LastName
+		from WorkshopTerms as wt
+			left join WorkshopBookings as wb
+				on wb.WorkshopTermID = wt.WorkshopTermID
+			left join WorkshopBookingDetails as wbd
+				on wb.WorkshopBookingID = wbd.WorkshopBookingID
+			left join Participants as p
+				on p.ParticipantID = wbd.ParticipantID;
+go
