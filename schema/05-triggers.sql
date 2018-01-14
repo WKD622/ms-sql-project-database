@@ -48,7 +48,7 @@ go
  */
 create trigger ConferenceDayValidate
 	on ConferenceDays
-	for insert as
+	for update as
 begin
 	declare @confid int;
 	select @confid = ConferenceID
@@ -93,8 +93,48 @@ begin
 		print 'Cannot delete a paid booking';
 		rollback;
 	end
-	
-	delete Bookings
-		where BookingID = @bookingID;
 end
 go
+
+/**
+ * Dla osoby fizycznej wymaga żeby było Participants = 1.
+ */
+create trigger DayBookingParticipants
+	on DayBookings
+	for update as
+begin
+	declare @customerID int;
+	select @customerID = CustomerID
+		from Bookings
+		where BookingID = (select BookingID from inserted);
+	
+	if isPerson(@customerID) and (select Participants from inserted) <> 1
+	begin
+		print 'A person may only book one place'
+		rollback;
+	end
+end
+go
+
+/**
+ * Dla osoby fizycznej wymaga żeby było Participants = 1.
+ */
+create trigger WorkshopBookingParticipants
+	on WorkshopBookings
+	for update as
+begin
+	declare @customerID int;
+	select @customerID = CustomerID
+		from DayBookings as db
+			inner join Bookings as b
+				on db.BookingID = b.BookingID
+		where DayBookingID = (select DayBookingID from inserted);
+	
+	if isPerson(@customerID) and (select Participants from inserted) <> 1
+	begin
+		print 'A person may only book one place'
+		rollback;
+	end
+end
+go
+
