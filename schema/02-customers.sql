@@ -30,7 +30,7 @@ create table Customers (
 		check (Phone <> ''),
 	Email      varchar(255)   not null unique
 		check (Email like '_%@_%._%'),
-	Login      varchar(64)    not null
+	Login      varchar(64)    not null unique
 		check (len(Login) >= 5),
 	Password   varbinary(255) not null,
 	primary key (CustomerID)
