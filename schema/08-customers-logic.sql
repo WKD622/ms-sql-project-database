@@ -131,5 +131,3 @@ create procedure addCompanyParticipant (
 		end
 	commit transaction;
 go
-
-
