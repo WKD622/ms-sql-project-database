@@ -68,6 +68,48 @@ create procedure addConference (
 go
 
 /**
+ * Dodaje warsztat
+ */
+create procedure addWorkshop (
+	@name             varchar(255),
+	@description	  varchar(255)
+) as
+	set xact_abort on;
+	begin transaction;
+		insert into Workshops (
+			Name, Description
+		) values (
+			@name, @description
+		);
+	commit transaction
+go
+
+/**
+ * Dodaje instancję wybranego warsztatu
+ */
+create procedure addWorkshopTerms (
+	@workshopID       int,
+	@dayID			  int,
+	@price 			  money,
+	@start 			  time,
+	@end 			  time,
+	@capacity		  int
+) as 
+	set xact_abort on;
+	begin transaction;
+		insert into WorkshopTerms (
+			WorkshopID, DayID,
+			Price, Start,
+			End, Capacity
+		) values (
+			@workshopID, @dayID,
+			@price, @start,
+			@end, @capacity
+		)
+	commit transaction
+go
+	
+/**
  * Dodaje próg cenowy dla konferencji.
  */
 create procedure addConferencePrice (
@@ -125,3 +167,36 @@ begin
 	return @available;
 end
 go
+
+/**
+ * Zwraca ConferenceID dla podanej nazwy konferencji
+ */
+create function getConferenceForName(
+	@name varchar(255)
+) returns int
+as 
+begin 
+	declare @conferenceID as int;
+	select @conferenceID = c.conferenceID
+		from Conferences as c
+		where c.Name = @name
+	return @conferenceID
+end 
+go
+
+/**
+ * Zwraca WorkshopID dla podanej nazwy warsztatu 
+ */
+ create function getWorkshopForName(
+	@name varchar(255)
+) returns int
+as 
+begin 
+	declare @workshopID as int;
+	select @workshopID = w.WorkshopID
+		from Workshops as w
+		where w.Name = @name
+	return @workshopID
+end 
+go
+
