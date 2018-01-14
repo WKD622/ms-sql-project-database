@@ -28,11 +28,11 @@ create table Customers (
 		check (Address <> ''),
 	Phone      varchar(32)    not null
 		check (Phone <> ''),
-	Email      varchar(255)   not null
+	Email      varchar(255)   not null unique
 		check (Email like '_%@_%._%'),
 	Login      varchar(64)    not null
-		check (len(Login) > 5),
-	Password   varbinary(256) not null,
+		check (len(Login) >= 5),
+	Password   varbinary(255) not null,
 	primary key (CustomerID)
 );
 

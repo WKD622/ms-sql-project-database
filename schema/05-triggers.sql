@@ -44,8 +44,6 @@ go
  * sprawdza czy dzień konferencji zawiera się w przedziale dat
  * konferencji <s>oraz czy już dzień ten nie jest dodany</s>
  * sprawdzanie czy dzień jest dodany jest w unique
- * 
- * DZIAŁA
  */
 create trigger ConferenceDayValidity
 	on ConferenceDays
