@@ -124,7 +124,7 @@ go
  * Zwraca ilość wolnych miejsc dla danego dnia konferencji.
  * Zwraca {@code null} gdy ilość miejsc jest nieograniczona.
  */
-create function getAvailableSpacesForDay(
+create function getAvailableSpacesForDay (
 	@conferenceDayID int
 ) returns int
 as
@@ -148,7 +148,7 @@ go
  * Zwraca ilość wolnych miejsc dla danego terminu warsztatu.
  * Zwraca {@code null} gdy ilość miejsc jest nieograniczona.
  */
-create function getAvailableSpacesForWorkshop(
+create function getAvailableSpacesForWorkshop (
 	@workshopTermID int
 ) returns int
 as
@@ -169,7 +169,7 @@ go
 /**
  * Zwraca ConferenceID dla podanej nazwy konferencji.
  */
-create function getConferenceForName(
+create function getConferenceForName (
 	@name varchar(255)
 ) returns int
 as
@@ -187,7 +187,7 @@ go
 /**
  * Zwraca WorkshopID dla podanej nazwy warsztatu.
  */
-create function getWorkshopForName(
+create function getWorkshopForName (
 	@name varchar(255)
 ) returns int
 as
@@ -199,5 +199,52 @@ begin
 		where w.Name = @name;
 	
 	return @workshopID;
+end
+go
+
+/**
+ * Zwraca cenę danego terminu warsztatu.
+ */
+create function getWorkshopTermPrice (
+	@workshopTermID int
+) returns int
+as
+begin
+	return (select Price
+		from Workshops
+		where WorkshopID = @workshopTermID);
+end
+go
+
+/**
+ * Zwraca cenę danego dnia konferencji po uwzględnieniu
+ * zniżki zależnej od dnia rezerwacji oraz zniżki studenckiej.
+ */
+create function getDayBookingPrice (
+	@dayBookingID  int,
+	@participantID int
+) returns int
+as
+begin
+	declare @bookingDate as date;
+	select @bookingDate = BookingDate
+		from Bookings as b
+			inner join DayBookings as db
+				on db.BookingID = b.BookingID
+		where db.DayBookingID = @dayBookingID;
+	
+	declare @conferenceID as int;
+	select @conferenceID = ConferenceID
+		from Conferences as c
+			inner join ConferenceDays as cd
+				on c.ConferenceID = cd.ConferenceID
+			inner join DayBookings as db
+				on db.ConferenceDayID = cd.ConferenceDayID
+		where db.DayBookingID = @dayBookingID;
+	
+	return (select top 1 Discount
+		from Prices
+		where ConferenceID = @conferenceID and DueDate >= @bookingDate
+		order by DueDate);
 end
 go
