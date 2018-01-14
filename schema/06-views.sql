@@ -91,5 +91,5 @@ create view UnpaidBookings as
 			PaymentDate,
 			(datediff(day, getdate(), DueDate)) as Delay
 		from Bookings
-		where Paid = 0 and getdate() > DueDate;
+		where PaymentDate is null and getdate() > DueDate;
 go

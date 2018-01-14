@@ -20,9 +20,8 @@ create table Bookings (
 		default getdate(),
 	DueDate     date         not null
 		default dateadd(week, 1, getdate()),
-	PaymentDate date         null,
-	Paid        bit          not null
-		default 0,
+	PaymentDate date         null
+		default null,
 	primary key (BookingID),
 	constraint BookingDateDueDate
 		check (BookingDate < DueDate),
