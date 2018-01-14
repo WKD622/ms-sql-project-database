@@ -13,7 +13,7 @@ create procedure addConference (
 	@name             varchar(255),
 	@price            money,
 	@startDay         date,
-	@endDay           date
+	@endDay           date,
 	@participantLimit int,
 	@studentDiscount  decimal(3, 2)
 ) as
