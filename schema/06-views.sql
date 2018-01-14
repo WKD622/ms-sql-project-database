@@ -6,10 +6,9 @@
  */
 
 /**
- * Widok rezerwacji, które nie zostały zapłacone w terminie,
- * posortowane według terminu płatności.
+ * Widok rezerwacji, które nie zostały zapłacone w terminie.
  */
 create view UnpaidBookings as
 	select * from Bookings
-		where Paid = 0 and getdate() > DueDate
-		order by DueDate;
+		where Paid = 0 and getdate() > DueDate;
+go

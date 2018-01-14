@@ -124,3 +124,4 @@ alter table DayBookings
 	add constraint FK_DayBookings_ConferenceDays
 	foreign key (ConferenceDayID)
 	references ConferenceDays (ConferenceDayID);
+go

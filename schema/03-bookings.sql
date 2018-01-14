@@ -23,9 +23,9 @@ create table Bookings (
 	PaymentDate date         null,
 	Paid        bit          not null
 		default 0,
-	primary key (BookingID)
+	primary key (BookingID),
 	constraint BookingDateDueDate
-		check (BookingDate < DueDate)
+		check (BookingDate < DueDate),
 	constraint BookingDatePaymentDate
 		check ((PaymentDate is null) or (BookingDate <= PaymentDate))
 );
@@ -47,8 +47,7 @@ create table DayBookingDetails (
 );
 
 create table DayBookings (
-	DayBookingID    int identity not null
-		check (Participants > 0),
+	DayBookingID    int identity not null,
 	BookingID       int          not null,
 	ConferenceDayID int          not null,
 	Participants    int          not null

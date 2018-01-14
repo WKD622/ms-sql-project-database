@@ -38,7 +38,7 @@ create table Conferences (
 	EndDay           date          not null,
 	ParticipantLimit int           null
 		check (ParticipantLimit is null or ParticipantLimit > 0),
-	StudentDiscout   decimal(3, 2) not null
+	StudentDiscount  decimal(3, 2) not null
 		check (StudentDiscount >= 0 and StudentDiscount <= 1)
 		default 0,
 	primary key (ConferenceID),

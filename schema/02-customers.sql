@@ -31,7 +31,7 @@ create table Customers (
 	Email      varchar(255)   not null
 		check (Email like '_%@_%._%'),
 	Login      varchar(64)    not null
-		check (length(Login) > 5),
+		check (len(Login) > 5),
 	Password   varbinary(256) not null,
 	primary key (CustomerID)
 );
@@ -91,7 +91,7 @@ create table StudentIDs (
 );
 
 create table Participants (
-	ParticipantID int identity not null
+	ParticipantID int identity not null,
 	FirstName     varchar(255) not null
 		check (FirstName <> ''),
 	LastName      varchar(255) not null

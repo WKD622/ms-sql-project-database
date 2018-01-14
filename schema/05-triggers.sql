@@ -38,6 +38,7 @@ begin
 		rollback;
 	end
 end
+go
 
 /**
  * sprawdza czy dzień konferencji zawiera się w przedziale dat
@@ -80,3 +81,4 @@ begin
 		rollback;
 	end
 end
+go
