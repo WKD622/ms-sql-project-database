@@ -83,6 +83,15 @@ create table CompanyParticipants (
 	primary key (ParticipantID)
 );
 
+/**
+ * Tabela przechowująca numery legitymacji studenckich
+ * uczestników.
+ * 
+ * @column ParticipantID
+ *     ID uczestnika
+ * @column StudentID
+ *     numer legitymacji studenckiej
+ */
 create table StudentIDs (
 	ParticipantID int     not null,
 	StudentID     char(6) not null unique
@@ -90,6 +99,16 @@ create table StudentIDs (
 	primary key (ParticipantID)
 );
 
+/**
+ * Tabela przechowująca dane uczestników.
+ * 
+ * @column ParticipantID
+ *     ID uczestnika
+ * @column FirstName
+ *     imię uczestnika
+ * @column LastName
+ *     nazwisko uczestnika
+ */
 create table Participants (
 	ParticipantID int identity not null,
 	FirstName     varchar(255) not null
