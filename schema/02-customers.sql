@@ -31,7 +31,7 @@ create table Customers (
 	Email      varchar(255)   not null
 		check (Email like '_%@_%._%'),
 	Login      varchar(64)    not null
-		check (CHAR_LENGTH(Login) > 5),
+		check (length(Login) > 5),
 	Password   varbinary(256) not null,
 	primary key (CustomerID)
 );

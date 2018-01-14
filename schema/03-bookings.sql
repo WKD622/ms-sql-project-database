@@ -9,7 +9,7 @@
 create table BookingStudentIDs (
 	DayBookingID int     not null,
 	StudentID    char(6) not null unique
-		check (StudentID NOT LIKE '%[^0-9]%'),
+		check (StudentID not like '%[^0-9]%'),
 	primary key (DayBookingID)
 );
 
@@ -19,14 +19,14 @@ create table Bookings (
 	BookingDate date         not null
 		default getdate(),
 	DueDate     date         not null
-		default dateadd('week', 1, getdate()),
+		default dateadd(week, 1, getdate()),
 	PaymentDate date         null,
 	Paid        bit          not null
 		default 0,
 	primary key (BookingID)
-	constraint BookingDue
+	constraint BookingDateDueDate
 		check (BookingDate < DueDate)
-	constraint BookingPayment
+	constraint BookingDatePaymentDate
 		check ((PaymentDate is null) or (BookingDate <= PaymentDate))
 );
 

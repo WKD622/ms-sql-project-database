@@ -7,120 +7,120 @@
 
 --- Persons.CustomerID <-> Customers.CustomerID
 alter table Persons
-	add constraint FKPersons336560
+	add constraint FK_Persons_Customers
 	foreign key (CustomerID)
 	references Customers (CustomerID);
 
 --- Companies.CustomerID <-> Customers.CustomerID
 alter table Companies
-	add constraint FKCompanies259074
+	add constraint FK_Companies_Customers
 	foreign key (CustomerID)
 	references Customers (CustomerID);
 
 --- CompanyParticipants.CustomerID <-> Companies.CustomerID
 alter table CompanyParticipants
-	add constraint FKCompanyPar396925
+	add constraint FK_CompanyParticipants_Companies
 	foreign key (CompanyID)
 	references Companies (CustomerID);
 
 --- ConferenceDays.ConferenceID <-> Conferences.ConferenceID
 alter table ConferenceDays
-	add constraint FKConference689988
+	add constraint FK_ConferenceDays_Conferences
 	foreign key (ConferenceID)
 	references Conferences (ConferenceID);
 
 --- WorkshopTerms.WorkshopID <-> Workshops.WorkshopID
 alter table WorkshopTerms
-	add constraint FKWorkshopTe655363
+	add constraint FK_WorkshopTerms_Workshops
 	foreign key (WorkshopID)
 	references Workshops (WorkshopID);
 
 --- WorkshopTerms.DayID <-> ConferenceDays.ConferenceDayID
 alter table WorkshopTerms
-	add constraint FKWorkshopTe428820
+	add constraint FK_WorkshopTerms_ConferenceDays
 	foreign key (DayID)
 	references ConferenceDays (ConferenceDayID);
 
 --- Persons.ParticipantID <-> Participants.ParticipantID
 alter table Persons
-	add constraint FKPersons422904
+	add constraint FK_Persons_Participants
 	foreign key (ParticipantID)
 	references Participants (ParticipantID);
 
 --- CompanyParticipants.ParticipantID <-> Participants.ParticipantID
 alter table CompanyParticipants
-	add constraint FKCompanyPar628077
+	add constraint FK_CompanyParticipants_Participants
 	foreign key (ParticipantID)
 	references Participants (ParticipantID);
 
 --- WorkshopBookingDetails.ParticipantID <-> Participants.ParticipantID
 alter table WorkshopBookingDetails
-	add constraint FKWorkshopBo225545
+	add constraint FK_WorkshopBookingDetails_Participants
 	foreign key (ParticipantID)
 	references Participants (ParticipantID);
 
 --- WorkshopBookingDetails.WorkshopBookingID <-> WorkshopBookings.WorkshopBookingID
 alter table WorkshopBookingDetails
-	add constraint FKWorkshopBo133697
+	add constraint FK_WorkshopBookingDetails_WorkshopBookings
 	foreign key (WorkshopBookingID)
 	references WorkshopBookings (WorkshopBookingID);
 
 --- WorkshopBookings.WorkshopTermID <-> WorkshopTerms.WorkshopTermID
 alter table WorkshopBookings
-	add constraint FKWorkshopBo238930
+	add constraint FK_WorkshopBookings_WorkshopTerms
 	foreign key (WorkshopTermID)
 	references WorkshopTerms (WorkshopTermID);
 
 --- DayBookingDetails.DayBookingID <-> DayBookings.DayBookingID
 alter table DayBookingDetails
-	add constraint FKDayBooking258140
+	add constraint FK_DayBookingDetails_DayBookings
 	foreign key (DayBookingID)
 	references DayBookings (DayBookingID);
 
 --- DayBookingDetails.ParticipantID <-> Participants.ParticipantID
 alter table DayBookingDetails
-	add constraint FKDayBooking637424
+	add constraint FK_DayBookingDetails_Participants
 	foreign key (ParticipantID)
 	references Participants (ParticipantID);
 
 --- Prices.ConferenceID <-> Conferences.ConferenceID
 alter table Prices
-	add constraint FKPrices192071
+	add constraint FK_Prices_Conferences
 	foreign key (ConferenceID)
 	references Conferences (ConferenceID);
 
 --- WorkshopBookings.DayBookingID <-> DayBookings.DayBookingID
 alter table WorkshopBookings
-	add constraint FKWorkshopBo201789
+	add constraint FK_WorkshopBookings_DayBookings
 	foreign key (DayBookingID)
 	references DayBookings (DayBookingID);
 
 --- StudentIDs.ParticipantID <-> Participants.ParticipantID
 alter table StudentIDs
-	add constraint FKStudentIDs613554
+	add constraint FK_StudentIDs_Participants
 	foreign key (ParticipantID)
 	references Participants (ParticipantID);
 
 --- DayBookings.BookingID <-> Bookings.BookingID
 alter table DayBookings
-	add constraint FKDayBooking362799
+	add constraint FK_DayBookings_Bookings
 	foreign key (BookingID)
 	references Bookings (BookingID);
 
 --- BookingStudentIDs.DayBookingID <-> DayBookings.DayBookingID
 alter table BookingStudentIDs
-	add constraint FKBookingStu301
+	add constraint FK_BookingStudentIDs_DayBookings
 	foreign key (DayBookingID)
 	references DayBookings (DayBookingID);
 
 --- Bookings.CustomerID <-> Customers.CustomerID
 alter table Bookings
-	add constraint FKBookings930718
+	add constraint FK_Bookings_Customers
 	foreign key (CustomerID)
 	references Customers (CustomerID);
 
 --- DayBookings.ConferenceDayID <-> ConferenceDays.ConferenceDayID
 alter table DayBookings
-	add constraint FKDayBooking44781
+	add constraint FK_DayBookings_ConferenceDays
 	foreign key (ConferenceDayID)
 	references ConferenceDays (ConferenceDayID);
