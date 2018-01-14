@@ -8,6 +8,14 @@
 /**
  * Widok podsumowujący klientów.
  * 
+ * @column IsCompany
+ *     równe 1 jeśli klient jest firmą, 0 w innym przypadku
+ * @column Name
+ *     nazwa klienta -- dla firm nazwa firmy, dla osób
+ *     fizycznych imię i nazwisko
+ * @column NIP
+ *     NIP firmy lub {@code null} w przypadku osoby fizycznej
+ * 
  * @tested
  */
 create view CustomersSummary as
@@ -39,6 +47,13 @@ go
 
 /**
  * Widok aktywności klientów.
+ * 
+ * @column DayBookingsCount
+ *     ilość kupionych dni konferencji
+ * @column WorkshopBookingsCount
+ *     ilość kupionych warsztatów
+ * @column BookingsCount
+ *     ilość kupionych warsztatów i dni konferencji
  */
 create view ActiveCustomers as
 	select
