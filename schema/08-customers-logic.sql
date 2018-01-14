@@ -54,7 +54,8 @@ create procedure addPerson (
 	@phone     varchar(32),
 	@email     varchar(255),
 	@login     varchar(64),
-	@password  varbinary(255)
+	@password  varbinary(255),
+	@studentID char(6) = null
 ) as
 	set xact_abort on;
 	begin transaction;
@@ -83,5 +84,14 @@ create procedure addPerson (
 		) values (
 			@pid, @cid
 		);
+		
+		if @studentID is not null
+		begin
+			insert into StudentIDs (
+				ParticipantID, StudentID
+			) values (
+				@pid, @studentID
+			);
+		end
 	commit transaction;
 go
