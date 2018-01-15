@@ -15,7 +15,10 @@ create trigger ParticipantLimitWorkshopBookings
 	for insert as
 begin
 	declare @wtermid int;
-	select @wtermid = WorkshopTermID
+	declare @participants int;
+	select
+			@wtermid = WorkshopTermID,
+			@participants = Participants
 		from inserted;
 	
 	declare @capacity int;
@@ -23,16 +26,48 @@ begin
 		from WorkshopTerms as wt
 		where wt.WorkshopTermID = @wtermid;
 	
-	declare @participants int;
-	select @participants = Participants
-		from inserted;
-	
 	declare @sum int;
 	select @sum = sum(Participants)
 		from WorkshopBookings as wb
 		where wb.WorkshopTermID = @wtermid;
 	
 	if (@sum + @participants > @capacity)
+	begin
+		print 'Too many participants';
+		rollback;
+	end
+end
+go
+
+/**
+ * Dla danego dnia, suma pól Paticipants (plus ilość miejsc z
+ * nowego wiersza) musi być mniejsza bądź równa wartości
+ * ParticipantLimit w Conferences.
+ */
+create trigger ParticipantLimitDayBookings
+	on DayBookings
+	for insert as
+begin
+	declare @dayID int;
+	declare @participants int;
+	select
+			@dayID = ConferenceDayID,
+			@participants = Participants
+		from inserted;
+	
+	declare @limit int;
+	select @limit = ParticipantLimit
+		from Conferences as c
+			inner join ConferenceDays as cd
+				on cd.ConferenceID = c.ConferenceID
+		where db.ConferenceDayID = @dayID;
+	
+	declare @sum int;
+	select @sum = sum(Participants)
+		from DayBookings as db
+		where db.ConferenceDayID = @dayID;
+	
+	if (@sum + @participants > @limit)
 	begin
 		print 'Too many participants';
 		rollback;
