@@ -100,10 +100,10 @@ create view WorkshopBookingsSummary as
 			w.WorkshopID,
 			w.Name,
 			w.Description,
-			wt.Day,
+			cd.Day,
 			wt.StartTime,
 			wt.EndTime,
-			(case when PaymentDate is null then 0 else 1 end)
+			(case when b.PaymentDate is null then 0 else 1 end)
 				as Paid
 		from Workshops as w
 			inner join WorkshopTerms as wt
@@ -111,36 +111,49 @@ create view WorkshopBookingsSummary as
 			inner join WorkshopBookings as wb
 				on wb.WorkshopTermID = wt.WorkshopTermID
 			inner join WorkshopBookingDetails as wbd
-				on wbd.WorkshopBookingID = wb.WorkshopBookingID;
+				on wbd.WorkshopBookingID = wb.WorkshopBookingID
+			inner join DayBookings as db
+				on db.DayBookingID = wb.DayBookingID
+			inner join Bookings as b
+				on db.BookingID = b.BookingID
+			inner join ConferenceDays as cd
+				on cd.ConferenceDayID = db.ConferenceDayID;
 go
 
 create view WorkshopsSummary as
 	select
-			WorkshopID,
-			WorkshopTermID,
-			Name,
-			Description,
-			Day,
-			StartTime,
-			EndTime,
-			(sum(Participants)) as Enrolled,
-			(sum(Participants)/Capacity*100) as PercentEnrolled
+			w.WorkshopID,
+			wt.WorkshopTermID,
+			w.Name,
+			w.Description,
+			cd.Day,
+			wt.StartTime,
+			wt.EndTime,
+			(sum(wb.Participants)) as Enrolled,
+			(sum(wb.Participants)/wt.Capacity*100) as PercentEnrolled
 		from Workshops as w
 			inner join WorkshopTerms as wt
 				on wt.WorkshopID = w.WorkshopID
 			inner join WorkshopBookings as wb
 				on wb.WorkshopTermID = wt.WorkshopTermID
-		group by WorkshopID, Name, Description, Day, StartTime, EndTime, WorkshopTermID;
+			inner join DayBookings as db
+				on db.DayBookingID = wb.DayBookingID
+			inner join ConferenceDays as cd
+				on cd.ConferenceDayID = db.ConferenceDayID
+		group by w.WorkshopID, wt.WorkshopTermID, Name,
+			Description, Day, StartTime, EndTime, wt.Capacity;
 go
 
 create view WorkshopParticipantLists as
 	select
-			WorkshopTermID,
-			Name,
-			ParticipantID,
-			FirstName,
-			LastName
+			wt.WorkshopTermID,
+			w.Name,
+			p.ParticipantID,
+			p.FirstName,
+			p.LastName
 		from WorkshopTerms as wt
+			left join Workshops as w
+				on w.WorkshopID = wt.WorkshopID
 			left join WorkshopBookings as wb
 				on wb.WorkshopTermID = wt.WorkshopTermID
 			left join WorkshopBookingDetails as wbd

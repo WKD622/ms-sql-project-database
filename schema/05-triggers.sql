@@ -60,7 +60,7 @@ begin
 		from Conferences as c
 			inner join ConferenceDays as cd
 				on cd.ConferenceID = c.ConferenceID
-		where db.ConferenceDayID = @dayID;
+		where cd.ConferenceDayID = @dayID;
 	
 	declare @sum int;
 	select @sum = sum(Participants)
@@ -114,8 +114,8 @@ create trigger DeleteBookingAfterPayment
 	on Bookings
 	for delete as
 begin
-	declare @bokingid int;
-	select @bokingid = BookingID
+	declare @bookingID int;
+	select @bookingID = BookingID
 		from deleted;
 	
 	declare @paymentDate date;
@@ -123,7 +123,7 @@ begin
 		from Bookings
 		where BookingID = @bookingID;
 	
-	if @paymetDate is not null
+	if @paymentDate is not null
 	begin
 		print 'Cannot delete a paid booking';
 		rollback;
@@ -144,7 +144,7 @@ begin
 		from Bookings
 		where BookingID = (select BookingID from inserted);
 	
-	if isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
+	if dbo.isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
 	begin
 		print 'A person may only book one place'
 		rollback;
@@ -167,7 +167,7 @@ begin
 				on db.BookingID = b.BookingID
 		where DayBookingID = (select DayBookingID from inserted);
 	
-	if isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
+	if dbo.isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
 	begin
 		print 'A person may only book one place'
 		rollback;

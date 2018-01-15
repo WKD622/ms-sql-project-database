@@ -23,13 +23,7 @@ go
 create procedure addBooking (
 	@customerID int
 ) as
-	insert into DayBookings (
-		CustomerID, BookingDate,
-		DueDate, PaymentDate
-	) values (
-		@customerID, default,
-		default, null
-	);
+	insert into Bookings (CustomerID) values (@customerID);
 go
 
 /**
@@ -76,7 +70,7 @@ begin
 			Day as Date,
 			null as Time,
 			Participants as Spaces,
-			(getDayBookingPrice(DayBookingID))
+			(dbo.getDayBookingPrice(DayBookingID))
 				as Price
 		from DayBookings as db
 			inner join ConferenceDays as cd

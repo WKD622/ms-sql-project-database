@@ -8,9 +8,11 @@
 
 create table BookingStudentIDs (
 	DayBookingID int     not null,
-	StudentID    char(6) not null unique
+	StudentID    char(6) not null
 		check (StudentID not like '%[^0-9]%'),
-	primary key (DayBookingID)
+	primary key (DayBookingID),
+	constraint BookingStudentIDsUnique
+		unique (DayBookingID, StudentID)
 );
 
 create table Bookings (

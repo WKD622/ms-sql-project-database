@@ -211,8 +211,8 @@ create function getWorkshopTermPrice (
 as
 begin
 	return (select Price
-		from Workshops
-		where WorkshopID = @workshopTermID);
+		from WorkshopTerms
+		where WorkshopTermID = @workshopTermID);
 end
 go
 
@@ -234,7 +234,7 @@ begin
 		where db.DayBookingID = @dayBookingID;
 	
 	declare @conferenceID as int;
-	select @conferenceID = ConferenceID
+	select @conferenceID = c.ConferenceID
 		from Conferences as c
 			inner join ConferenceDays as cd
 				on c.ConferenceID = cd.ConferenceID
@@ -244,7 +244,7 @@ begin
 	
 	return (select top 1 Discount
 		from Prices
-		where ConferenceID = @conferenceID and DueDate >= @bookingDate
-		order by DueDate);
+		where ConferenceID = @conferenceID and Till >= @bookingDate
+		order by Till);
 end
 go
