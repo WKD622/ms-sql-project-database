@@ -19,10 +19,12 @@ create table Bookings (
 	BookingID   int identity not null,
 	CustomerID  int          not null,
 	BookingDate date         not null
+		check (BookingDate <= getDate())
 		default getdate(),
 	DueDate     date         not null
 		default dateadd(week, 1, getdate()),
 	PaymentDate date         null
+		check (PaymentDate <= getDate())
 		default null,
 	primary key (BookingID),
 	constraint BookingDateDueDate
