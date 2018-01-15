@@ -135,7 +135,7 @@ create procedure addCompanyParticipant (
 go
 
 /**
- * Sprawdzy czy dany customer jest klientem idndywidualnym czy firmą
+ * Sprawdź czy dany klient jest osobą fizyczną czy firmą.
  *
  * @tested
  */
@@ -148,5 +148,17 @@ begin
 		return 1
 	
 	return 0
+end
+go
+
+/**
+ * Zwróć ID klienta dla danego loginu.
+ */
+create function getCustomerForLogin (
+	@login varchar(64)
+) returns int
+as
+begin
+	return (select CustomerID from Customers where Login = @login);
 end
 go
