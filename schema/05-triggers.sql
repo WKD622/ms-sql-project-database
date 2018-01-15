@@ -137,6 +137,31 @@ end
 go
 
 /**
+ * Sprwdza czy rezerwacja warsztatu robiona jest w dobry dzień.
+ */
+create trigger WorkshopDay
+	on WorkshopBookings
+	for insert, update as
+begin
+	declare @dayID1 int;
+	select @dayID1 = DayID
+		from WorkshopTerms
+		where WorkshopTermID = (select WorkshopTermID from inserted);
+	
+	declare @dayID2 int;
+	select @dayID2 = ConferenceDayID
+		from DayBookings
+		where DayBookingID = (select DayBookingID from inserted);
+	
+	if @dayID1 <> @dayID2
+	begin
+		print 'Cannot book a workshop on a wrong day';
+		rollback;
+	end
+end
+go
+
+/**
  * Dla osoby fizycznej w rezerwacji dnia
  * wymaga żeby było Participants = 1.
  * 
@@ -193,7 +218,7 @@ go
  */
 create trigger WorkshopCapacity
 	on WorkshopTermns
-	for insert as 
+	for insert as
 begin
 	
 	declare @workshopTermID int;
@@ -224,4 +249,3 @@ begin
 		end 
 end 
 go
-

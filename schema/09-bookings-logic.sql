@@ -151,8 +151,8 @@ end
 go
 
 /**
- * Generuje tabele z danymi do faktury dla danego bookingu
- *
+ * Generuje tabele z danymi do faktury dla danej rezerwacji.
+ * 
  * @tested
  */
 create function generateInvoice (
