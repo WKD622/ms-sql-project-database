@@ -8,12 +8,18 @@
 
 /**
  * Ustawia datę wykonania płatności dla wybranego zamówienia.
+ * 
+ * @tested
  */
 create procedure setPaid (
-	@bookingID int
+	@bookingID   int,
+	@paymentDate date = null
 ) as
+	if @paymentDate is null
+		select @paymentDate = getdate();
+	
 	update Bookings
-		set PaymentDate = getdate()
+		set PaymentDate = @paymentDate
 		where BookingID = @bookingID;
 go
 
@@ -90,6 +96,9 @@ begin
 			where ConferenceID = @conferenceID and Till >= @bookingDate
 			order by Till);
 	
+	if @discount is null
+		return 0
+	
 	return @discount;
 end
 go
@@ -124,7 +133,11 @@ begin
 		from DayBookings
 		where DayBookingID = @dayBookingID);
 	
-	return @price * @discount * (@studentsNo * @studentDiscount + (@studentsNo - @participants));
+	set @price = @price * (1 - @discount);
+	
+	return
+		(@price * @studentsNo * (1 - @studentDiscount) +
+		@price * (@participants - @studentsNo));
 end
 go
 
