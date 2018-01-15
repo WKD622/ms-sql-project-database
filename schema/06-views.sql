@@ -208,6 +208,10 @@ create view WorkshopsSummary as
 			Description, Day, StartTime, EndTime, wt.Capacity;
 go
 
+/**
+ * nie działa dla niezapisanych osób (pokazuje
+ * jeden wiersz dla jednego klienta)
+ */
 create view WorkshopParticipantLists as
 	select
 			wt.WorkshopTermID,

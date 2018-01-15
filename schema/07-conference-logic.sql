@@ -129,6 +129,8 @@ go
 /**
  * Zwraca ilość wolnych miejsc dla danego dnia konferencji.
  * Zwraca {@code null} gdy ilość miejsc jest nieograniczona.
+ * 
+ * @tested
  */
 create function getAvailableSpacesForDay (
 	@conferenceDayID int
@@ -153,6 +155,8 @@ go
 /**
  * Zwraca ilość wolnych miejsc dla danego terminu warsztatu.
  * Zwraca {@code null} gdy ilość miejsc jest nieograniczona.
+ * 
+ * @tested
  */
 create function getAvailableSpacesForWorkshop (
 	@workshopTermID int
