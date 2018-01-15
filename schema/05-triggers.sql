@@ -109,6 +109,8 @@ go
 /**
  * Nie pozwala usunąć zamówienia, które jest
  * opłacone.
+ * 
+ * @tested
  */
 create trigger DeleteBookingAfterPayment
 	on Bookings
@@ -120,8 +122,7 @@ begin
 	
 	declare @paymentDate date;
 	select @paymentDate = PaymentDate
-		from Bookings
-		where BookingID = @bookingID;
+		from deleted;
 	
 	if @paymentDate is not null
 	begin
