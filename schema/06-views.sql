@@ -54,6 +54,8 @@ go
  *     ilość kupionych warsztatów
  * @column BookingsCount
  *     ilość kupionych warsztatów i dni konferencji
+ * 
+ * @tested
  */
 create view ActiveCustomers as
 	select
@@ -82,6 +84,8 @@ go
  * 
  * @column Delay
  *     ilość dni spóźnienia
+ * 
+ * @tested
  */
 create view UnpaidBookings as
 	select
@@ -89,7 +93,7 @@ create view UnpaidBookings as
 			BookingDate,
 			DueDate,
 			PaymentDate,
-			(datediff(day, getdate(), DueDate)) as Delay
+			(datediff(day, DueDate, getdate())) as Delay
 		from Bookings
 		where PaymentDate is null and getdate() > DueDate;
 go
