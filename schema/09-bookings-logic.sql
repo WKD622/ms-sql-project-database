@@ -157,33 +157,49 @@ go
  */
 create function generateInvoice (
 	@bookingID int
-) returns table
+) returns
+@invoice table(
+	Product varchar(64),
+	Date date,
+	Time time,
+	Spaces int,
+	Price money
+)
 as
-return
+begin
+	insert into @invoice (Product, Date, Time, Spaces, Price)
 	(select
-		'Day' as Product,
-		Day as Date,
-		null as Time,
-		Participants as Spaces,
-		(dbo.getDayBookingPrice(DayBookingID))
-			as Price
-	from DayBookings as db
-		inner join ConferenceDays as cd
-			on cd.ConferenceDayID = db.ConferenceDayID
-	where BookingID = @bookingID
-	union
-	select
-		'Workshop' as Product,
-		cd.Day as Date,
-		wt.StartTime as Time,
-		wb.Participants as Spaces,
-		wt.Price
-	from WorkshopBookings as wb
-		inner join WorkshopTerms as wt
-			on wt.WorkshopTermID = wb.WorkshopTermID
-		inner join DayBookings as db
-			on db.DayBookingID = wb.DayBookingID
-		inner join ConferenceDays as cd
-			on cd.ConferenceDayID = db.ConferenceDayID
-	where BookingID = @bookingID);
+			'Day' as Product,
+			Day as Date,
+			null as Time,
+			Participants as Spaces,
+			(dbo.getDayBookingPrice(DayBookingID))
+				as Price
+		from DayBookings as db
+			inner join ConferenceDays as cd
+				on cd.ConferenceDayID = db.ConferenceDayID
+		where BookingID = @bookingID
+		union
+		select
+			'Workshop' as Product,
+			cd.Day as Date,
+			wt.StartTime as Time,
+			wb.Participants as Spaces,
+			wt.Price
+		from WorkshopBookings as wb
+			inner join WorkshopTerms as wt
+				on wt.WorkshopTermID = wb.WorkshopTermID
+			inner join DayBookings as db
+				on db.DayBookingID = wb.DayBookingID
+			inner join ConferenceDays as cd
+				on cd.ConferenceDayID = db.ConferenceDayID
+		where BookingID = @bookingID);
+	
+	declare @sum int = (select sum(Price) from @invoice);
+	
+	insert into @invoice (Product, Date, Time, Spaces, Price)
+		values (null, null, null, null, @sum);
+	
+	return;
+end
 go
