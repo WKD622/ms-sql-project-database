@@ -149,6 +149,8 @@ go
 
 /** 
  * Generuje tabele z danymi do faktury dla danego bookingu
+ *
+ * @tested
  */ 
 create function generateInvoice (
 	@bookingID int
