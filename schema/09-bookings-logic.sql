@@ -25,6 +25,8 @@ go
 
 /**
  * Dodaje zamówienie.
+ *
+ * @tested
  */
 create procedure addBooking (
 	@customerID int
