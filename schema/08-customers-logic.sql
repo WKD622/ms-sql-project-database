@@ -134,6 +134,11 @@ create procedure addCompanyParticipant (
 	commit transaction;
 go
 
+/**
+ * Sprawdzy czy dany customer jest klientem idndywidualnym czy firmą
+ *
+ * @tested
+ */
 create function isPerson (
 	@customerID int
 ) returns bit
