@@ -98,6 +98,8 @@ go
 
 /**
  * Dodaje uczestnika z danej firmy.
+ * 
+ * @tested
  */
 create procedure addCompanyParticipant (
 	@companyID int,
