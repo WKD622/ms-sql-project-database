@@ -186,3 +186,16 @@ begin
 	end
 end
 go
+
+/**
+ * Sprwdza czy pojemność danego warsztatu nie jest większa niż pojemność
+ * dnia konferencji do którego należy ten warsztat.
+ */
+create trigger WorkshopCapacity
+	on WorkshopTermns
+	for insert as 
+begin
+	
+end 
+go
+end 
