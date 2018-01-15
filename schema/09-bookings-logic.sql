@@ -36,6 +36,8 @@ go
 
 /**
  * Dodaje rezerwację dnia.
+ * 
+ * @tested
  */
 create procedure addDayBooking (
 	@bookingID       int,
