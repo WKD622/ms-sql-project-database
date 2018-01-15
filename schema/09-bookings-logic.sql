@@ -59,9 +59,9 @@ go
  * @tested
  */
 create procedure addWorkshopBooking (
-	@workshopTermID int,
 	@dayBookingID   int,
-	@participants   int
+	@workshopTermID int,
+	@participants   int = 1
 ) as
 	insert into WorkshopBookings (
 		WorkshopTermID, DayBookingID,

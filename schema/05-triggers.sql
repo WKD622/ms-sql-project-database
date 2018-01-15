@@ -83,7 +83,7 @@ go
  */
 create trigger ConferenceDayValidate
 	on ConferenceDays
-	for update as
+	for insert, update as
 begin
 	declare @confid int;
 	select @confid = ConferenceID
@@ -138,12 +138,15 @@ go
  */
 create trigger DayBookingParticipants
 	on DayBookings
-	for update as
+	for insert, update as
 begin
+	declare @bookingID int;
+	select @bookingID = BookingID from inserted;
+	
 	declare @customerID int;
 	select @customerID = CustomerID
 		from Bookings
-		where BookingID = (select BookingID from inserted);
+		where BookingID = @bookingID;
 	
 	if dbo.isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
 	begin
@@ -159,7 +162,7 @@ go
  */
 create trigger WorkshopBookingParticipants
 	on WorkshopBookings
-	for update as
+	for insert, update as
 begin
 	declare @customerID int;
 	select @customerID = CustomerID
