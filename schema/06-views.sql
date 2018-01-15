@@ -151,6 +151,32 @@ create view WorkshopBookingsSummary as
 				on cd.ConferenceDayID = db.ConferenceDayID;
 go
 
+/**
+ * Widok podsumowania warsztatów.
+ * 
+ * @column WorkshopID
+ *     ID warsztatu
+ * @column WorkshopTermID
+ *     ID terminu warsztatu
+ * @column Name
+ *     nazwa warsztatu
+ * @column Description
+ *     opis warsztatu
+ * @column Day
+ *     dzień, w którym warsztat ma miejsce
+ * @column StartTime
+ *     czas rozpoczęcia warsztatu
+ * @column EndTime
+ *     czas zakończenia warsztatu
+ * @column Capacity
+ *     pojemność warsztatu
+ * @column Enrolled
+ *     ilośc osób zapisanych
+ * @column PercentEnrolled
+ *     procent zapełnienia warsztatu
+ * 
+ * @tested
+ */
 create view WorkshopsSummary as
 	select
 			w.WorkshopID,
@@ -161,7 +187,14 @@ create view WorkshopsSummary as
 			wt.StartTime,
 			wt.EndTime,
 			(sum(wb.Participants)) as Enrolled,
-			(sum(wb.Participants)/wt.Capacity*100) as PercentEnrolled
+			wt.Capacity,
+			cast(
+				100 * (
+					cast(sum(wb.Participants) as decimal) /
+					wt.Capacity
+				) as decimal(5, 2)
+			)
+				as PercentEnrolled
 		from Workshops as w
 			inner join WorkshopTerms as wt
 				on wt.WorkshopID = w.WorkshopID
