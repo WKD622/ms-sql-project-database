@@ -215,36 +215,3 @@ begin
 		where WorkshopTermID = @workshopTermID);
 end
 go
-
-/**
- * Zwraca cenę danego dnia konferencji po uwzględnieniu
- * zniżki zależnej od dnia rezerwacji oraz zniżki studenckiej.
- */
-create function getDayBookingPrice (
-	@dayBookingID  int,
-	@participantID int
-) returns int
-as
-begin
-	declare @bookingDate as date;
-	select @bookingDate = BookingDate
-		from Bookings as b
-			inner join DayBookings as db
-				on db.BookingID = b.BookingID
-		where db.DayBookingID = @dayBookingID;
-	
-	declare @conferenceID as int;
-	select @conferenceID = c.ConferenceID
-		from Conferences as c
-			inner join ConferenceDays as cd
-				on c.ConferenceID = cd.ConferenceID
-			inner join DayBookings as db
-				on db.ConferenceDayID = cd.ConferenceDayID
-		where db.DayBookingID = @dayBookingID;
-	
-	return (select top 1 Discount
-		from Prices
-		where ConferenceID = @conferenceID and Till >= @bookingDate
-		order by Till);
-end
-go
