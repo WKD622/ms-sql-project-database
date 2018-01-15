@@ -152,7 +152,10 @@ end
 go
 
 /**
- * Zwróć ID klienta dla danego loginu.
+ * Zwróć ID klienta dla danego loginu lub {@code null}
+ * jeśli klient o takim loginie nie istnieje.
+ * 
+ * @tested
  */
 create function getCustomerForLogin (
 	@login varchar(64)
