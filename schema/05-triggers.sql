@@ -9,10 +9,12 @@
  * Dla danego WorkshopTermID w WorkshopBookings, suma pól
  * Paticipants (plus ilość miejsc z nowego wiersza) musi być
  * mniejsza bądź równa wartości Capacity w WorkshopTerms.
+ * 
+ * @tested
  */
 create trigger ParticipantLimitWorkshopBookings
 	on WorkshopBookings
-	for insert as
+	for insert, update as
 begin
 	declare @wtermid int;
 	declare @participants int;
@@ -31,7 +33,7 @@ begin
 		from WorkshopBookings as wb
 		where wb.WorkshopTermID = @wtermid;
 	
-	if (@sum + @participants > @capacity)
+	if (@sum > @capacity)
 	begin
 		print 'Too many participants';
 		rollback;
@@ -43,10 +45,12 @@ go
  * Dla danego dnia, suma pól Paticipants (plus ilość miejsc z
  * nowego wiersza) musi być mniejsza bądź równa wartości
  * ParticipantLimit w Conferences.
+ * 
+ * @tested
  */
 create trigger ParticipantLimitDayBookings
 	on DayBookings
-	for insert as
+	for insert, update as
 begin
 	declare @dayID int;
 	declare @participants int;
@@ -67,7 +71,7 @@ begin
 		from DayBookings as db
 		where db.ConferenceDayID = @dayID;
 	
-	if (@sum + @participants > @limit)
+	if (@sum > @limit)
 	begin
 		print 'Too many participants';
 		rollback;
