@@ -69,6 +69,8 @@ go
 
 /**
  * Dodaje warsztat.
+ * 
+ * @tested
  */
 create procedure addWorkshop (
 	@name        varchar(255),
@@ -83,6 +85,8 @@ go
 
 /**
  * Dodaje instancję wybranego warsztatu.
+ * 
+ * @tested
  */
 create procedure addWorkshopTerm (
 	@workshopID int,
@@ -90,7 +94,7 @@ create procedure addWorkshopTerm (
 	@price      money,
 	@startTime  time,
 	@endTime    time,
-	@capacity   int
+	@capacity   int = null
 ) as
 	insert into WorkshopTerms (
 		WorkshopID, DayID,
@@ -105,6 +109,8 @@ go
 
 /**
  * Dodaje próg cenowy dla konferencji.
+ * 
+ * @tested
  */
 create procedure addConferencePrice (
 	@confid   int,
@@ -185,7 +191,9 @@ end
 go
 
 /**
- * Zwraca WorkshopID dla podanej nazwy warsztatu.
+ * Zwraca ID warsztatu dla podanej nazwy warsztatu.
+ * 
+ * @tested
  */
 create function getWorkshopForName (
 	@name varchar(255)
