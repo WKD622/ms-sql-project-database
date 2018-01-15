@@ -196,6 +196,32 @@ create trigger WorkshopCapacity
 	for insert as 
 begin
 	
+	declare @workshopTermID int;
+	select @workshopTermID = wt.WorkshopTermID
+		from WorkshopTerms as wt 
+		where wt.WorkshopTermID = (select WorkshopTermID from inserted);
+		
+	declare @dayID int;
+	declare @capacity int;
+	select @dayID = wt.DayID, @capacity = wt.Capacity
+		from WorkshopTerms as wt 
+		where wt.WorkshopTermID = @workshopTermID;
+	
+	declare @conferenceID int;
+	select @conferenceID = cd.ConferenceID 
+		from ConferenceDays as cd
+		where cd.ConferenceDayID = @dayID;
+		
+	declare @participantLimit int;
+	select @participantLimit = c.ParticipantLimit
+		from Conferences as c alter
+		where c.ConferenceID = @conferenceID;
+	
+		if @participantLimit < @capacity
+		begin
+			print 'Capacity of WorkshopTerm is bigger than limit of participants for its ConferenceDay'
+			rollback;
+		end 
 end 
 go
-end 
+
