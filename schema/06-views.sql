@@ -98,8 +98,33 @@ create view UnpaidBookings as
 		where PaymentDate is null and getdate() > DueDate;
 go
 
+/**
+ * Widok podsumowania rezerwacji warsztatów.
+ * 
+ * @column CustomerID
+ *     ID klienta składającego zamówienie
+ * @column ParticipantID
+ *     ID uczestnika biorącego udział w warsztacie
+ * @column WorkshopID
+ *     ID warsztatu
+ * @column Name
+ *     nazwa warsztatu
+ * @column Description
+ *     opis warsztatu
+ * @column Day
+ *     dzień, w którym warsztat ma miejsce
+ * @column StartTime
+ *     czas rozpoczęcia warsztatu
+ * @column EndTime
+ *     czas zakończenia warsztatu
+ * @column Paid
+ *     {@code 1} jeśli zapłacony
+ * 
+ * @tested
+ */
 create view WorkshopBookingsSummary as
 	select
+			c.CustomerID,
 			wbd.ParticipantID,
 			w.WorkshopID,
 			w.Name,
@@ -114,12 +139,14 @@ create view WorkshopBookingsSummary as
 				on wt.WorkshopID = w.WorkshopID
 			inner join WorkshopBookings as wb
 				on wb.WorkshopTermID = wt.WorkshopTermID
-			inner join WorkshopBookingDetails as wbd
+			left join WorkshopBookingDetails as wbd
 				on wbd.WorkshopBookingID = wb.WorkshopBookingID
 			inner join DayBookings as db
 				on db.DayBookingID = wb.DayBookingID
 			inner join Bookings as b
 				on db.BookingID = b.BookingID
+			inner join Customers as c
+				on c.CustomerID = b.CustomerID
 			inner join ConferenceDays as cd
 				on cd.ConferenceDayID = db.ConferenceDayID;
 go

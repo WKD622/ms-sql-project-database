@@ -25,7 +25,7 @@ go
 
 /**
  * Dodaje zamówienie.
- *
+ * 
  * @tested
  */
 create procedure addBooking (
@@ -53,6 +53,8 @@ go
 
 /**
  * Dodaje rezerwację warsztatu.
+ * 
+ * @tested
  */
 create procedure addWorkshopBooking (
 	@workshopTermID int,
