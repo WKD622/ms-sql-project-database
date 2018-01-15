@@ -178,6 +178,8 @@ go
 
 /**
  * Zwraca ConferenceID dla podanej nazwy konferencji.
+ * 
+ * @tested
  */
 create function getConferenceForName (
 	@name varchar(255)
@@ -216,6 +218,8 @@ go
 
 /**
  * Zwraca cenę danego terminu warsztatu.
+ * 
+ * @tested
  */
 create function getWorkshopTermPrice (
 	@workshopTermID int

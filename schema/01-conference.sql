@@ -30,7 +30,7 @@
  */
 create table Conferences (
 	ConferenceID     int identity  not null,
-	Name             varchar(255)  not null
+	Name             varchar(255)  not null unique
 		check (Name <> ''),
 	Price            money         not null
 		check (Price >= 0),
