@@ -75,10 +75,12 @@ go
 /**
  * Zwraca zniżkę dla danej rezerwacji dnia.
  * Zniżka ta jest zniżką wynikającą z progu cenowego.
+ * 
+ * @tested
  */
 create function getDayBookingDiscount (
 	@dayBookingID int
-) returns int
+) returns decimal(3, 2)
 as
 begin
 	declare @bookingDate as date;
@@ -183,6 +185,5 @@ return
 			on db.DayBookingID = wb.DayBookingID
 		inner join ConferenceDays as cd
 			on cd.ConferenceDayID = db.ConferenceDayID
-	where BookingID = @bookingID
-	);
+	where BookingID = @bookingID);
 go
