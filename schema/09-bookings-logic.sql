@@ -73,7 +73,8 @@ create procedure addWorkshopBooking (
 go
 
 /**
- * 
+ * Zwraca zniżkę dla danej rezerwacji dnia.
+ * Zniżka ta jest zniżką wynikającą z progu cenowego.
  */
 create function getDayBookingDiscount (
 	@dayBookingID int
@@ -151,7 +152,7 @@ go
  * Generuje tabele z danymi do faktury dla danego bookingu
  *
  * @tested
- */ 
+ */
 create function generateInvoice (
 	@bookingID int
 ) returns table
