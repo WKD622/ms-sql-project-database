@@ -135,6 +135,8 @@ go
 /**
  * Dla osoby fizycznej w rezerwacji dnia
  * wymaga żeby było Participants = 1.
+ * 
+ * @tested
  */
 create trigger DayBookingParticipants
 	on DayBookings
@@ -159,6 +161,8 @@ go
 /**
  * Dla osoby fizycznej w rezerwacji warsztatu wymaga
  * żeby było Participants = 1.
+ * 
+ * @tested
  */
 create trigger WorkshopBookingParticipants
 	on WorkshopBookings
