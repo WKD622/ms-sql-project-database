@@ -68,26 +68,35 @@ exec addWorkshop 'workshop', 'description';
 -- Pobierz ID warsztatu
 declare @workshopID int = dbo.getWorkshopForName('workshop');
 
-declare @workshopTermID int;
-
 -- Błąd: zła cena
-exec addWorkshopTerm @workshopID, @dayID1, -100, '12:00', '13:35', 10, @workshopTermID output;
+exec addWorkshopTerm @workshopID, @dayID1, -100, '12:00', '13:35', 10;
 
 -- Błąd: zły zakres dat
-exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '11:35', 10, @workshopTermID output;
+exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '11:35', 10;
 
 -- Błąd: zła pojemnosć
-exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', 0, @workshopTermID output;
+exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', 0;
 
 -- Okej: nieograniczona pojemność
-exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', null, @workshopTermID output;
+exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', null;
 
 -- Okej: darmowy warsztat
-exec addWorkshopTerm @workshopID, @dayID1, 0, '12:00', '13:35', 10, @workshopTermID output;
+exec addWorkshopTerm @workshopID, @dayID1, 0, '12:00', '13:35', 10;
 
 -- Stwórz warsztat
 --     w pierwszym dnu konferencji
 --     cena: 100
---     12:00 -- 13:35
+--     12:00 -- 14:00
 --     na 10 osób
-exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', 10, @workshopTermID output;
+-- etc.
+declare @term1_12_14 int;
+exec addWorkshopTerm @workshopID, @dayID1, 123, '12:00', '14:00', 10, @term1_12_14 output;
+
+declare @term1_13_15 int;
+exec addWorkshopTerm @workshopID, @dayID1, 456, '13:00', '15:00', 10, @term1_13_15 output;
+
+declare @term2_12_14 int;
+exec addWorkshopTerm @workshopID, @dayID2, 321, '12:00', '14:00', 10, @term1_12_14 output;
+
+declare @term2_13_15 int;
+exec addWorkshopTerm @workshopID, @dayID2, 654, '13:00', '15:00', 10, @term1_13_15 output;
