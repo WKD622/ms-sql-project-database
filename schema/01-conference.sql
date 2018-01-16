@@ -117,6 +117,11 @@ create table Workshops (
  * @constraint StartTimeEndTime
  *     sprawdza czy czas zakończenia warsztatu jest po
  *     czasie rozpoczęcia
+ * @constraint InvalidWorkshopPrice
+ *     sprawdza czy cena warsztatu jest większa lub równa 0
+ * @constraint InvalidWorkshopCapacity
+ *     sprawdza czy pojemność jest albo nieograniczona,
+ *     albo większa od zera
  */
 create table WorkshopTerms (
 	WorkshopTermID int identity not null,

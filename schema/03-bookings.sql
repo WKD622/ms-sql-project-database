@@ -16,6 +16,20 @@ create table BookingStudentIDs (
 		check (StudentID not like '%[^0-9]%')
 );
 
+/**
+ * Tabela przechowująca rezerwacje.
+ * 
+ * @column BookingID
+ *     ID rezerwacji
+ * @column CustomerID
+ *     ID klienta, który rezerwuje
+ * @column BookingDate
+ *     data rezerwacji
+ * @column DueDate
+ *     termin płatności
+ * @column PaymentDate
+ *     data zapłaty
+ */
 create table Bookings (
 	BookingID   int identity not null,
 	CustomerID  int          not null,
@@ -33,6 +47,18 @@ create table Bookings (
 		check (PaymentDate <= getDate())
 );
 
+/**
+ * Tabela przechowująca rezerwacje warsztatów.
+ * 
+ * @column WorkshopBookingID
+ *     ID rezerwacji warsztatu
+ * @column WorkshopTermID
+ *     ID terminu rezerwowanego warsztatu
+ * @column DayBookingID
+ *     ID rezerwacji dnia
+ * @column Participants
+ *     ilość osób, których dotyczy rezerwacja
+ */
 create table WorkshopBookings (
 	WorkshopBookingID int identity not null,
 	WorkshopTermID    int          not null,
@@ -49,6 +75,18 @@ create table DayBookingDetails (
 	primary key (DayBookingID, ParticipantID)
 );
 
+/**
+ * Tabela przechowująca rezerwacje dni.
+ * 
+ * @column DayBookingID
+ *     ID rezerwacji dnia
+ * @column BookingID
+ *     ID rezerwacji
+ * @column ConferenceDayID
+ *     ID dnia konferencji
+ * @column Participants
+ *     ilość osób, których dotyczy rezerwacja
+ */
 create table DayBookings (
 	DayBookingID    int identity not null,
 	BookingID       int          not null,
