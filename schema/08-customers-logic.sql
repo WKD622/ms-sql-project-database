@@ -152,6 +152,35 @@ end
 go
 
 /**
+ * Sprawdź czy uczestnik jest studentem.
+ */
+create function isStudent (
+	@participantID int
+) returns bit
+as
+begin
+	if exists (select * from StudentIDs where ParticipantID = @participantID)
+		return 1
+	
+	return 0
+end
+go
+
+/**
+ * Zwróć ID uczestnika dla ID osoby fizycznej.
+ */
+create function asParticipant (
+	@customerID int
+) returns int
+as
+begin
+	return (select ParticipantID
+		from Persons
+		where CustomerID = @customerID);
+end
+go
+
+/**
  * Zwróć ID klienta dla danego loginu lub {@code null}
  * jeśli klient o takim loginie nie istnieje.
  * 

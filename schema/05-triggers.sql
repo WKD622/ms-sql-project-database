@@ -35,8 +35,8 @@ begin
 	
 	if (@sum > @capacity)
 	begin
-		print 'Too many participants';
 		rollback;
+		raiserror('Too many participants', 18, 0);
 	end
 end
 go
@@ -73,8 +73,8 @@ begin
 	
 	if (@sum > @limit)
 	begin
-		print 'Too many participants';
 		rollback;
+		raiserror('Too many participants', 18, 0);
 	end
 end
 go
@@ -104,8 +104,8 @@ begin
 	
 	if (@day < @from or @day > @to)
 	begin
-		print 'Invalid conference day (not in the interval)';
 		rollback;
+		raiserror('Invalid conference day (not in the interval)', 18, 0);
 	end
 end
 go
@@ -130,8 +130,8 @@ begin
 	
 	if @paymentDate is not null
 	begin
-		print 'Cannot delete a paid booking';
 		rollback;
+		raiserror('Cannot delete a paid booking', 18, 0);
 	end
 end
 go
@@ -155,8 +155,8 @@ begin
 	
 	if @dayID1 <> @dayID2
 	begin
-		print 'Cannot book a workshop on a wrong day';
 		rollback;
+		raiserror('Cannot book a workshop on a wrong day', 18, 0);
 	end
 end
 go
@@ -181,8 +181,8 @@ begin
 	
 	if dbo.isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
 	begin
-		print 'A person may only book one place'
 		rollback;
+		raiserror('A person may only book one place', 18, 0);
 	end
 end
 go
@@ -206,8 +206,8 @@ begin
 	
 	if dbo.isPerson(@customerID) = 1 and (select Participants from inserted) <> 1
 	begin
-		print 'A person may only book one place'
 		rollback;
+		raiserror('A person may only book one place', 18, 0);
 	end
 end
 go
@@ -242,10 +242,12 @@ begin
 		from Conferences as c
 		where c.ConferenceID = @conferenceID;
 	
-	if @participantLimit < @capacity
+	if
+		@participantLimit < @capacity or
+		(@capacity is null and @participantLimit is not null)
 	begin
-		print 'Capacity of WorkshopTerm is bigger than limit of participants for its ConferenceDay'
 		rollback;
+		raiserror('Capacity of WorkshopTerm is bigger than limit of participants for its ConferenceDay', 18, 0);
 	end
 end
 go
