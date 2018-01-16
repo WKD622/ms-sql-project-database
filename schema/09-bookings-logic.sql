@@ -30,7 +30,7 @@ go
  */
 create procedure addBooking (
 	@customerID int,
-	@bookingID int output = null
+	@bookingID  int = null output
 ) as
 	insert into Bookings (CustomerID) values (@customerID);
 	select @bookingID = scope_identity();
@@ -53,7 +53,7 @@ go
 create procedure addDayBooking (
 	@bookingID       int,
 	@conferenceDayID int,
-	@dayBookingID    int output = null,
+	@dayBookingID    int = null output,
 	@participants    int = 1
 ) as
 	insert into DayBookings (

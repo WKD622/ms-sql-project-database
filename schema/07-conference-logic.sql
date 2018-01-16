@@ -96,7 +96,7 @@ create procedure addWorkshopTerm (
 	@endTime    time,
 	@capacity   int = null,
 	
-	@workshopTermID int output = null
+	@workshopTermID int = null output
 ) as
 	insert into WorkshopTerms (
 		WorkshopID, DayID,

@@ -217,7 +217,7 @@ go
  * dnia konferencji do którego należy ten warsztat.
  */
 create trigger WorkshopCapacity
-	on WorkshopTermns
+	on WorkshopTerms
 	for insert as
 begin
 	declare @workshopTermID int;
