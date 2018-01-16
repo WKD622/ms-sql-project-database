@@ -132,35 +132,81 @@ declare @student1  int = dbo.getCustomerForLogin('student1');
 declare @person1p  int = dbo.asParticipant(@person1);
 declare @student1p int = dbo.asParticipant(@student1);
 
+---------------------------------------------------------------------------------------------------
+
 -- Powinno wypisać dwa razy 1
-print dbo.isPerson(@person1);
-print dbo.isPerson(@student1);
+if	dbo.isPerson(@person1) <> 1 or
+	dbo.isPerson(@student1) <> 1
+	raiserror('FAILED', 18, 0);
+else print 'PASSED';
 
 -- Powinno wypisać 0 oraz 1
-print dbo.isStudent(@person1p);
-print dbo.isStudent(@student1p);
+if	dbo.isStudent(@person1p) <> 0 or
+	dbo.isStudent(@student1p) <> 1
+	raiserror('FAILED', 18, 0);
+else print 'PASSED';
 
--- Błąd: powtórzony login
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'email@example.com', 'student1', 0x00, '123457';
+---------------------------------------------------------------------------------------------------
 
--- Błąd: powtórzony nr legitymacji
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'email@example.com', 'student2', 0x00, '123456';
+begin try
+	-- Błąd: powtórzony login
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'email@example.com', 'student1', 0x00, '123457';
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
 
--- Błąd: powtórzony email
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student2', 0x00, '123457';
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: powtórzony nr legitymacji
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'email@example.com', 'student2', 0x00, '123456';
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: powtórzony email
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student2', 0x00, '123457';
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
 
 ---------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------
 
--- Błąd: zły nip
-exec addCompany 'nazwa', '123456789', 'adres', 'telefon', 'company1@example.com', 'company1', 0x00;
+begin try
+	-- Błąd: zły nip
+	exec addCompany 'nazwa', '123456789', 'adres', 'telefon', 'company1@example.com', 'company1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
 
 -- Okej
 exec addCompany 'nazwa', '1234567891', 'adres', 'telefon', 'company1@example.com', 'company1', 0x00;
 declare @company1 int = dbo.getCustomerForLogin('company1');
 
 -- Powinno wypisać 0
-print dbo.isPerson(@company1);
+if	dbo.isPerson(@company1) <> 0
+	raiserror('FAILED', 18, 0);
+else print 'PASSED';
 
 -- Null: dla firmy nie działa
-print dbo.asParticipant(@company1);
+if	dbo.asParticipant(@company1) <> null
+	raiserror('FAILED', 18, 0);
+else print 'PASSED';
