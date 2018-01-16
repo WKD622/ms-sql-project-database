@@ -85,7 +85,7 @@ create table Workshops (
 	WorkshopID  int identity not null,
 	Name        varchar(255) not null unique
 		check (Name <> ''),
-	Description varchar(255) null
+	Description varchar(1023) null
 		check (Description is null or Description <> ''),
 	primary key (WorkshopID)
 );

@@ -247,5 +247,5 @@ begin
 		print 'Capacity of WorkshopTerm is bigger than limit of participants for its ConferenceDay'
 		rollback;
 	end
-end 
+end
 go
