@@ -26,12 +26,14 @@ go
 /**
  * Dodaje zamówienie.
  * 
- * @tested
+ * @tested oprócz output
  */
 create procedure addBooking (
-	@customerID int
+	@customerID int,
+	@bookingID int output = null
 ) as
 	insert into Bookings (CustomerID) values (@customerID);
+	select @bookingID = scope_identity();
 go
 
 /**
@@ -51,6 +53,7 @@ go
 create procedure addDayBooking (
 	@bookingID       int,
 	@conferenceDayID int,
+	@dayBookingID    int output = null,
 	@participants    int = 1
 ) as
 	insert into DayBookings (
@@ -60,6 +63,8 @@ create procedure addDayBooking (
 		@bookingID, @conferenceDayID,
 		@participants
 	);
+	
+	select @dayBookingID = scope_identity();
 go
 
 /**
