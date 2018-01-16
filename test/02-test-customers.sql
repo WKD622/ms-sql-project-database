@@ -137,15 +137,17 @@ declare @student1p int = dbo.asParticipant(@student1);
 ---------------------------------------------------------------------------------------------------
 
 -- Powinno wypisać dwa razy 1
-if	dbo.isPerson(@person1) <> 1 or
+if
+	dbo.isPerson(@person1) <> 1 or
 	dbo.isPerson(@student1) <> 1
-	raiserror('FAILED', 9, 0); return;
+begin raiserror('FAILED', 9, 0); return; end
 else print 'PASSED';
 
 -- Powinno wypisać 0 oraz 1
-if	dbo.isStudent(@person1p) <> 0 or
+if
+	dbo.isStudent(@person1p) <> 0 or
 	dbo.isStudent(@student1p) <> 1
-	raiserror('FAILED', 9, 0); return;
+begin raiserror('FAILED', 9, 0); return; end
 else print 'PASSED';
 
 ---------------------------------------------------------------------------------------------------
@@ -204,11 +206,13 @@ exec addCompany 'nazwa', '1234567891', 'adres', 'telefon', 'company1@example.com
 declare @company1 int = dbo.getCustomerForLogin('company1');
 
 -- Powinno wypisać 0
-if	dbo.isPerson(@company1) <> 0
-	raiserror('FAILED', 9, 0); return;
+if
+	dbo.isPerson(@company1) <> 0
+begin raiserror('FAILED', 9, 0); return; end
 else print 'PASSED 2 7';
 
 -- Null: dla firmy nie działa
-if	dbo.asParticipant(@company1) <> null
-	raiserror('FAILED', 9, 0); return;
+if
+	dbo.asParticipant(@company1) <> null
+begin raiserror('FAILED', 9, 0); return; end
 else print 'PASSED';

@@ -110,15 +110,17 @@ declare @conferenceID int = dbo.getConferenceForName('conference');
 ---------------------------------------------------------------------------------------------------
 
 -- Null: nie ma takiego dnia
-if	dbo.getDayForDate(@conferenceID, '2018-05-03') is not null
-	raiserror('FAILED', 9, 0); return;
+if
+	dbo.getDayForDate(@conferenceID, '2018-05-03') is not null
+begin raiserror('FAILED', 9, 0); return; end
 else print 'PASSED 1 4';
 
 ---------------------------------------------------------------------------------------------------
 
 -- Null: złe ID konferencji
-if	dbo.getDayForDate(1337, '2018-05-01') is not null
-	raiserror('FAILED', 9, 0); return;
+if
+	dbo.getDayForDate(1337, '2018-05-01') is not null
+begin raiserror('FAILED', 9, 0); return; end
 else print 'PASSED';
 
 ---------------------------------------------------------------------------------------------------
