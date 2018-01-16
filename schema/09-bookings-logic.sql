@@ -46,6 +46,17 @@ create procedure cancelBooking (
 go
 
 /**
+ * Dodaje nr legitymacji studenckiej dla zamówienia.
+ */
+create procedure addBookingStudentID (
+	@dayBookingID int,
+	@studentID    char(6)
+) as
+	insert into BookingStudentIDs (DayBookingID, StudentID)
+		values (@dayBookingID, @studentID);
+go
+
+/**
  * Dodaje rezerwację dnia.
  * 
  * @tested
@@ -65,6 +76,20 @@ create procedure addDayBooking (
 	);
 	
 	select @dayBookingID = scope_identity();
+	
+	declare @customerID int = (select CustomerID
+		from Bookings
+		where BookingID = @bookingID);
+	
+	if dbo.isPerson(@customerID) = 1
+	begin
+		declare @studentID char(6) = dbo.getStudentID(dbo.asParticipant(@customerID));
+		
+		if @studentID is not null
+		begin
+			exec addBookingStudentID @dayBookingID, @studentID;
+		end
+	end
 go
 
 /**
@@ -127,12 +152,26 @@ end
 go
 
 /**
+ * Zwraca ilość studentów z danej rezerwacji dnia.
+ */
+create function getDayBookingStudentCount (
+	@dayBookingID int
+) returns int
+as
+begin
+	return (select count(*)
+		from BookingStudentIDs
+		where DayBookingID = @dayBookingID);
+end
+go
+
+/**
  * Zwraca cenę danego dnia konferencji po uwzględnieniu
  * zniżki zależnej od dnia rezerwacji oraz zniżki studenckiej.
  */
 create function getDayBookingPrice (
 	@dayBookingID int
-) returns int
+) returns money
 as
 begin
 	declare @discount decimal(3,2) = dbo.getDayBookingDiscount(@dayBookingID);
@@ -148,9 +187,7 @@ begin
 				on db.ConferenceDayID = cd.ConferenceDayID
 		where db.DayBookingID = @dayBookingID;
 	
-	declare @studentsNo int = (select count(*)
-		from BookingStudentIDs
-		where DayBookingID = @dayBookingID);
+	declare @studentsNo int = dbo.getDayBookingStudentCount(@dayBookingID);
 	
 	declare @participants int = (select Participants
 		from DayBookings
@@ -176,33 +213,52 @@ create function generateInvoice (
 	Product varchar(64),
 	Date date,
 	Time time,
-	Spaces int,
-	Discount decimal(5, 2),
+	Participants int,
+	Discount decimal(3,0),
+	Students int,
+	StudentDiscount decimal(3,0),
 	Price money
 )
 as
 begin
-	insert into @invoice (Product, Date, Time, Spaces, Discount, Price)
+	insert into @invoice (Product, Date, Time, Participants, Discount, Students, StudentDiscount, Price)
 	(select
+		-- Produkt to dzień
 			'Day' as Product,
+		-- Wartość dnia jako data
 			Day as Date,
+		-- Czas nie dotyczy
 			null as Time,
-			Participants as Spaces,
+		-- Ilość osób z rezerwacji dnia
+			Participants,
+		-- Wartość zniżki z progu
 			(100 * dbo.getDayBookingDiscount(DayBookingID))
 				as Discount,
+		-- Ilość studentów z rezerwacji
+			(dbo.getDayBookingStudentCount(DayBookingID))
+				as Students,
+		-- Wartość zniżki studenckiej
+			(100 * StudentDiscount)
+				as StudentDiscount,
+		-- Cena
 			(dbo.getDayBookingPrice(DayBookingID))
 				as Price
 		from DayBookings as db
 			inner join ConferenceDays as cd
 				on cd.ConferenceDayID = db.ConferenceDayID
+			inner join Conferences as c
+				on c.ConferenceID = cd.ConferenceID
 		where BookingID = @bookingID
 		union
 		select
 			'Workshop' as Product,
 			cd.Day as Date,
 			wt.StartTime as Time,
-			wb.Participants as Spaces,
+			wb.Participants,
 			0 as Discount,
+			(dbo.getDayBookingStudentCount(db.DayBookingID))
+				as Students,
+			0 as StudentDiscount,
 			wt.Price
 		from WorkshopBookings as wb
 			inner join WorkshopTerms as wt
@@ -215,8 +271,8 @@ begin
 	
 	declare @sum int = (select sum(Price) from @invoice);
 	
-	insert into @invoice (Product, Date, Time, Spaces, Discount, Price)
-		values (null, null, null, null, null, @sum);
+	insert into @invoice (Product, Date, Time, Participants, Discount, Students, StudentDiscount, Price)
+		values (null, null, null, null, null, null, null, @sum);
 	
 	return;
 end

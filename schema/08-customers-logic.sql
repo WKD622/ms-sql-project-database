@@ -167,6 +167,18 @@ end
 go
 
 /**
+ * Pobierz nr legitymacji studenckiej.
+ */
+create function getStudentID (
+	@participantID int
+) returns char(6)
+as
+begin
+	return (select StudentID from StudentIDs where ParticipantID = @participantID)
+end
+go
+
+/**
  * Zwróć ID uczestnika dla ID osoby fizycznej.
  */
 create function asParticipant (
