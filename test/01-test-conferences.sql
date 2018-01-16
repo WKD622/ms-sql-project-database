@@ -37,16 +37,14 @@ exec addConference 'conference', 1000, '2018-05-01', '2018-05-02', 2, 0.2;
 -- Pobierz ID konferencji
 declare @confereceID int = dbo.getConferenceForName('conference');
 
--- Błąd: nie ma takiego dnia
-declare @dayID1 int = dbo.getDayForDate(@conferenceID, '2018-05-03');
-print @dayID1;
+-- Null: nie ma takiego dnia
+print dbo.getDayForDate(@conferenceID, '2018-05-03');
 
--- Błąd: złe ID konferencji
-select @dayID1 = dbo.getDayForDate(1337, '2018-05-01');
-print @dayID1;
+-- Null: złe ID konferencji
+print dbo.getDayForDate(1337, '2018-05-01');
 
 -- Okej
-select  @dayID1     = dbo.getDayForDate(@conferenceID, '2018-05-01');
+declare @dayID1 int = dbo.getDayForDate(@conferenceID, '2018-05-01');
 declare @dayID2 int = dbo.getDayForDate(@conferenceID, '2018-05-02');
 
 ---------------------------------------------------------------------------------------------------
