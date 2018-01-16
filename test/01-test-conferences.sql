@@ -4,10 +4,10 @@ begin try
 	-- Błąd: zła nazwa
 	exec addConference '', 1000, '2018-05-01', '2018-05-02', 10, 0.2;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
-	print 'PASSED';
+	print 'PASSED 1 1';
 end catch
 
 ---------------------------------------------------------------------------------------------------
@@ -16,7 +16,7 @@ begin try
 	-- Błąd: zła kolejność dat
 	exec addConference 'conference1', 1000, '2018-05-02', '2018-05-01', 10, 0.2;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -28,7 +28,7 @@ begin try
 	-- Błąd: zła wartość zniżki
 	exec addConference 'conference2', 1000, '2018-05-01', '2018-05-02', 10, 1.2;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -40,10 +40,10 @@ begin try
 	-- Błąd: zła wartość ceny
 	exec addConference 'conference3', -15, '2018-05-01', '2018-05-02', 10, 0.2;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
-	print 'PASSED';
+	print 'PASSED 1 2';
 end catch
 
 ---------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ begin try
 	-- Błąd: zły limit
 	exec addConference 'conference4', 1000, '2018-05-01', '2018-05-02', -10, 0.2;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -64,10 +64,10 @@ begin try
 	-- Błąd: limit zerowy
 	exec addConference 'conference5', 1000, '2018-05-01', '2018-05-02', 0, 0.2;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
-	print 'PASSED';
+	print 'PASSED 1 3';
 end catch
 
 ---------------------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ begin try
 	-- Błąd: powtórzona nazwa
 	exec addConference 'conference7', 0, '2018-05-01', '2018-05-02', 10, 0.2;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -111,14 +111,14 @@ declare @conferenceID int = dbo.getConferenceForName('conference');
 
 -- Null: nie ma takiego dnia
 if	dbo.getDayForDate(@conferenceID, '2018-05-03') is not null
-	raiserror('FAILED', 18, 0);
-else print 'PASSED';
+	raiserror('FAILED', 9, 0); return;
+else print 'PASSED 1 4';
 
 ---------------------------------------------------------------------------------------------------
 
 -- Null: złe ID konferencji
 if	dbo.getDayForDate(1337, '2018-05-01') is not null
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 else print 'PASSED';
 
 ---------------------------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ begin try
 	-- Błąd: zła nazwa
 	exec addWorkshop '', '';
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -146,10 +146,10 @@ begin try
 	-- Błąd: zły opis
 	exec addWorkshop 'workshop1', '';
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
-	print 'PASSED';
+	print 'PASSED 1 5';
 end catch
 
 ---------------------------------------------------------------------------------------------------
@@ -163,7 +163,7 @@ begin try
 	-- Błąd: powtórzona nazwa
 	exec addWorkshop 'workshop2', null;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -185,10 +185,10 @@ begin try
 	-- Błąd: zła cena
 	exec addWorkshopTerm @workshopID, @dayID1, -100, '12:00', '13:35', 10;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
-	print 'PASSED';
+	print 'PASSED 1 6';
 end catch
 
 ---------------------------------------------------------------------------------------------------
@@ -197,7 +197,7 @@ begin try
 	-- Błąd: zły zakres dat
 	exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '11:35', 10;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -209,10 +209,10 @@ begin try
 	-- Błąd: zła pojemnosć
 	exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', 0;
 	
-	raiserror('FAILED', 18, 0);
+	raiserror('FAILED', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
-	print 'PASSED';
+	print 'PASSED 1 7';
 end catch
 
 ---------------------------------------------------------------------------------------------------
