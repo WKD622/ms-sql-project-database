@@ -35,6 +35,15 @@ create procedure addBooking (
 go
 
 /**
+ * Usuwa zamówienie.
+ */
+create procedure cancelBooking (
+	@bookingID int
+) as
+	delete Bookings where BookingID = @bookingID;
+go
+
+/**
  * Dodaje rezerwację dnia.
  * 
  * @tested

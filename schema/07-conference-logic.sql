@@ -86,7 +86,7 @@ go
 /**
  * Dodaje instancję wybranego warsztatu.
  * 
- * @tested
+ * @tested oprócz output
  */
 create procedure addWorkshopTerm (
 	@workshopID int,
@@ -94,7 +94,9 @@ create procedure addWorkshopTerm (
 	@price      money,
 	@startTime  time,
 	@endTime    time,
-	@capacity   int = null
+	@capacity   int = null,
+	
+	@workshopTermID int output = null
 ) as
 	insert into WorkshopTerms (
 		WorkshopID, DayID,
@@ -105,6 +107,8 @@ create procedure addWorkshopTerm (
 		@price, @startTime,
 		@endTime, @capacity
 	);
+	
+	select @workshopTermID = scope_identity();
 go
 
 /**
@@ -229,5 +233,22 @@ begin
 	return (select Price
 		from WorkshopTerms
 		where WorkshopTermID = @workshopTermID);
+end
+go
+
+/**
+ * Zwraca ID dnia konferencji dla podanej daty.
+ */
+create function getDayForDate(
+	@conferenceID int,
+	@date date
+) returns int
+as
+begin
+	return (select ConferenceDayID
+		from ConferenceDays
+		where
+			ConferenceID = @conferenceID and
+			Day = @date);
 end
 go
