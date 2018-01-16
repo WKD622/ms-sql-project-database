@@ -284,9 +284,9 @@ declare @term1_13_15 int;
 exec addWorkshopTerm @workshopID, @dayID1, 456, '13:00', '15:00', 10, @term1_13_15 output;
 
 declare @term2_12_14 int;
-exec addWorkshopTerm @workshopID, @dayID2, 321, '12:00', '14:00', 10, @term1_12_14 output;
+exec addWorkshopTerm @workshopID, @dayID2, 321, '12:00', '14:00', 10, @term2_12_14 output;
 
 declare @term2_13_15 int;
-exec addWorkshopTerm @workshopID, @dayID2, 654, '13:00', '15:00', 10, @term1_13_15 output;
+exec addWorkshopTerm @workshopID, @dayID2, 654, '13:00', '15:00', 10, @term2_13_15 output;
 
 ---------------------------------------------------------------------------------------------------
