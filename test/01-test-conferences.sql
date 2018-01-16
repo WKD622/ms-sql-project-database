@@ -1,4 +1,4 @@
--- Testy dla konferencji.
+-- Testy dla konferencji i warsztatów.
 
 -- Błąd: zła nazwa
 exec addConference '', 1000, '2018-05-01', '2018-05-02', 2, 0.2;
@@ -37,6 +37,21 @@ exec addConference 'conference', 1000, '2018-05-01', '2018-05-02', 2, 0.2;
 -- Pobierz ID konferencji
 declare @confereceID int = dbo.getConferenceForName('conference');
 
+-- Błąd: nie ma takiego dnia
+declare @dayID1 int = dbo.getDayForDate(@conferenceID, '2018-05-03');
+print @dayID1;
+
+-- Błąd: złe ID konferencji
+select @dayID1 = dbo.getDayForDate(1337, '2018-05-01');
+print @dayID1;
+
+-- Okej
+select  @dayID1     = dbo.getDayForDate(@conferenceID, '2018-05-01');
+declare @dayID2 int = dbo.getDayForDate(@conferenceID, '2018-05-02');
+
+---------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------
+
 -- Błąd: zła nazwa
 exec addWorkshop '', '';
 
@@ -55,5 +70,26 @@ exec addWorkshop 'workshop', 'description';
 -- Pobierz ID warsztatu
 declare @workshopID int = dbo.getWorkshopForName('workshop');
 
+declare @workshopTermID int;
 
+-- Błąd: zła cena
+exec addWorkshopTerm @workshopID, @dayID1, -100, '12:00', '13:35', 10, @workshopTermID output;
 
+-- Błąd: zły zakres dat
+exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '11:35', 10, @workshopTermID output;
+
+-- Błąd: zła pojemnosć
+exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', 0, @workshopTermID output;
+
+-- Okej: nieograniczona pojemność
+exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', null, @workshopTermID output;
+
+-- Okej: darmowy warsztat
+exec addWorkshopTerm @workshopID, @dayID1, 0, '12:00', '13:35', 10, @workshopTermID output;
+
+-- Stwórz warsztat
+--     w pierwszym dnu konferencji
+--     cena: 100
+--     12:00 -- 13:35
+--     na 10 osób
+exec addWorkshopTerm @workshopID, @dayID1, 100, '12:00', '13:35', 10, @workshopTermID output;
