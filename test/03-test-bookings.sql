@@ -13,3 +13,9 @@ exec addWorkshopBooking @bstudent_d1, @term2_13_15;
 
 -- Błąd: nie może zapisać wielu uczestników
 exec addWorkshopBooking @bstudent_d1, @term1_13_15, 4;
+
+-- Okej
+exec addWorkshopBooking @bstudent_d1, @term1_13_15;
+
+-- Błąd: zachodzący warsztat
+exec addWorkshopBooking @bstudent_d1, @term2_12_14;

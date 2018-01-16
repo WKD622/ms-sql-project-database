@@ -1,20 +1,126 @@
 -- Testy dla klientów.
 
--- Błąd: złe imię / nazwisko / adres / telefon
-exec addPerson '', 'nazwisko', 'adres', 'telefon', 'person1@example.com', 'person1', 0x00;
-exec addPerson 'imię', '', 'adres', 'telefon', 'person1@example.com', 'person1', 0x00;
-exec addPerson 'imię', 'nazwisko', '', 'telefon', 'person1@example.com', 'person1', 0x00;
-exec addPerson 'imię', 'nazwisko', 'adres', '', 'person1@example.com', 'person1', 0x00;
+---------------------------------------------------------------------------------------------------
 
--- Błąd: zły email
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'person1', 'person1', 0x00;
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'person1@', 'person1', 0x00;
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'person1@com', 'person1', 0x00;
+begin try
+	-- Błąd: złe imię
+	exec addPerson '', 'nazwisko', 'adres', 'telefon', 'person1@example.com', 'person1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
 
--- Błąd: zły nr legitymacji
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student1', 0x00, '12345';
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student1', 0x00, '12345a';
-exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student1', 0x00, '7123457';
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: złe nazwisko
+	exec addPerson 'imię', '', 'adres', 'telefon', 'person1@example.com', 'person1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły adres
+	exec addPerson 'imię', 'nazwisko', '', 'telefon', 'person1@example.com', 'person1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły telefon
+	exec addPerson 'imię', 'nazwisko', 'adres', '', 'person1@example.com', 'person1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły email
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'person1', 'person1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły email
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'person1@', 'person1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły email
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'person1@com', 'person1', 0x00;
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły nr legitymacji
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student1', 0x00, '12345';
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły nr legitymacji
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student1', 0x00, '12345a';
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
+
+begin try
+	-- Błąd: zły nr legitymacji
+	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student1', 0x00, '7123457';
+	
+	raiserror('FAILED', 18, 0)
+end try begin catch
+	while @@trancount > 0 rollback
+	print 'PASSED';
+end catch
+
+---------------------------------------------------------------------------------------------------
 
 -- Okej
 exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'student1@example.com', 'student1', 0x00, '123456';
