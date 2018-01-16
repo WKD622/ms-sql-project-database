@@ -30,20 +30,23 @@
  */
 create table Conferences (
 	ConferenceID     int identity  not null,
-	Name             varchar(255)  not null unique
-		check (Name <> ''),
-	Price            money         not null
-		check (Price >= 0),
+	Name             varchar(255)  not null unique,
+	Price            money         not null,
 	StartDay         date          not null,
 	EndDay           date          not null,
-	ParticipantLimit int           null
-		check (ParticipantLimit is null or ParticipantLimit > 0),
-	StudentDiscount  decimal(3, 2) not null
-		check (StudentDiscount >= 0 and StudentDiscount <= 1)
-		default 0,
+	ParticipantLimit int           null,
+	StudentDiscount  decimal(3, 2) not null default 0,
 	primary key (ConferenceID),
 	constraint StartDayEndDay
-		check (StartDay <= EndDay)
+		check (StartDay <= EndDay),
+	constraint ConferenceNameEmpty
+		check (Name <> ''),
+	constraint InvlidConferencePrice
+		check (Price >= 0),
+	constraint InvalidParticipantLimit
+		check (ParticipantLimit is null or ParticipantLimit > 0),
+	constraint InvalidStudentDiscount
+		check (StudentDiscount >= 0 and StudentDiscount <= 1)
 );
 
 /**
@@ -83,11 +86,13 @@ create table ConferenceDays (
  */
 create table Workshops (
 	WorkshopID  int identity not null,
-	Name        varchar(255) not null unique
+	Name        varchar(255) not null unique,
+	Description varchar(1023) null,
+	primary key (WorkshopID),
+	constraint WorkshopNameEmpty
 		check (Name <> ''),
-	Description varchar(1023) null
-		check (Description is null or Description <> ''),
-	primary key (WorkshopID)
+	constraint WorkshopDescriptionEmpty
+		check (Description is null or Description <> '')
 );
 
 /**
@@ -117,22 +122,25 @@ create table WorkshopTerms (
 	WorkshopTermID int identity not null,
 	WorkshopID     int          not null,
 	DayID          int          not null,
-	Price          money        not null
-		check (Price >= 0),
+	Price          money        not null,
 	StartTime      time         not null,
 	EndTime        time         not null,
-	Capacity       int          null
-		check (Capacity is null or Capacity > 0),
+	Capacity       int          null,
 	primary key (WorkshopTermID),
 	constraint StartTimeEndTime
-		check (StartTime < EndTime)
+		check (StartTime < EndTime),
+	constraint InvalidWorkshopPrice
+		check (Price >= 0),
+	constraint InvalidWorkshopCapacity
+		check (Capacity is null or Capacity > 0)
 );
 
 create table Prices (
 	PriceID      int identity  not null,
 	ConferenceID int           not null,
 	Till         date          not null,
-	Discount     decimal(3, 2) not null
-		check (Discount >= 0 and Discount <= 1),
-	primary key (PriceID)
+	Discount     decimal(3, 2) not null,
+	primary key (PriceID),
+	constraint InvalidPriceDiscount
+		check (Discount >= 0 and Discount <= 1)
 );

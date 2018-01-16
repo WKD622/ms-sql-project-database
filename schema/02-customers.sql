@@ -24,16 +24,20 @@
  */
 create table Customers (
 	CustomerID int identity   not null,
-	Address    varchar(255)   not null
-		check (Address <> ''),
-	Phone      varchar(32)    not null
-		check (Phone <> ''),
-	Email      varchar(255)   not null unique
-		check (Email like '_%@_%._%'),
-	Login      varchar(64)    not null unique
-		check (len(Login) >= 5),
+	Address    varchar(255)   not null,
+	Phone      varchar(32)    not null,
+	Email      varchar(255)   not null unique,
+	Login      varchar(64)    not null unique,
 	Password   varbinary(255) not null,
-	primary key (CustomerID)
+	primary key (CustomerID),
+	constraint AddressEmpty
+		check (Address <> ''),
+	constraint PhoneEmpty
+		check (Phone <> ''),
+	constraint InvalidEmail
+		check (Email like '_%@_%._%'),
+	constraint LoginTooShort
+		check (len(Login) >= 5)
 );
 
 /**
@@ -48,11 +52,13 @@ create table Customers (
  */
 create table Companies (
 	CustomerID  int          not null,
-	NIP         char(10)     not null unique
+	NIP         char(10)     not null unique,
+	CompanyName varchar(255) not null,
+	primary key (CustomerID),
+	constraint InvalidNIP
 		check (NIP not like '%[^0-9]%'),
-	CompanyName varchar(255) not null
-		check (CompanyName <> ''),
-	primary key (CustomerID)
+	constraint CompanyNameEmpty
+		check (CompanyName <> '')
 );
 
 /**
@@ -94,9 +100,10 @@ create table CompanyParticipants (
  */
 create table StudentIDs (
 	ParticipantID int     not null,
-	StudentID     char(6) not null unique
-		check (StudentID not like '%[^0-9]%'),
-	primary key (ParticipantID)
+	StudentID     char(6) not null unique,
+	primary key (ParticipantID),
+	constraint InvalidStudentID
+		check (StudentID not like '%[^0-9]%')
 );
 
 /**
@@ -111,9 +118,11 @@ create table StudentIDs (
  */
 create table Participants (
 	ParticipantID int identity not null,
-	FirstName     varchar(255) not null
+	FirstName     varchar(255) not null,
+	LastName      varchar(255) not null,
+	primary key (ParticipantID),
+	constraint FirstNameEmpty
 		check (FirstName <> ''),
-	LastName      varchar(255) not null
-		check (LastName <> ''),
-	primary key (ParticipantID)
+	constraint LastNameEmpty
+		check (LastName <> '')
 );

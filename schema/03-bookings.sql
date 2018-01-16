@@ -8,39 +8,39 @@
 
 create table BookingStudentIDs (
 	DayBookingID int     not null,
-	StudentID    char(6) not null
-		check (StudentID not like '%[^0-9]%'),
+	StudentID    char(6) not null,
 	primary key (DayBookingID),
 	constraint BookingStudentIDsUnique
-		unique (DayBookingID, StudentID)
+		unique (DayBookingID, StudentID),
+	constraint InvalidBookingStudentID
+		check (StudentID not like '%[^0-9]%')
 );
 
 create table Bookings (
 	BookingID   int identity not null,
 	CustomerID  int          not null,
-	BookingDate date         not null
-		check (BookingDate <= getDate())
-		default getdate(),
-	DueDate     date         not null
-		default dateadd(week, 1, getdate()),
-	PaymentDate date         null
-		check (PaymentDate <= getDate())
-		default null,
+	BookingDate date         not null default getdate(),
+	DueDate     date         not null default dateadd(week, 1, getdate()),
+	PaymentDate date         null     default null,
 	primary key (BookingID),
 	constraint BookingDateDueDate
 		check (BookingDate < DueDate),
 	constraint BookingDatePaymentDate
-		check ((PaymentDate is null) or (BookingDate <= PaymentDate))
+		check ((PaymentDate is null) or (BookingDate <= PaymentDate)),
+	constraint ReasonableBookingDate
+		check (BookingDate <= getDate()),
+	constraint ReasonablePaymentDate
+		check (PaymentDate <= getDate())
 );
 
 create table WorkshopBookings (
 	WorkshopBookingID int identity not null,
 	WorkshopTermID    int          not null,
 	DayBookingID      int          not null,
-	Participants      int          not null
+	Participants      int          not null default 1,
+	primary key (WorkshopBookingID),
+	constraint PositiveWorkshopParticipantsNo
 		check (Participants > 0)
-		default 1,
-	primary key (WorkshopBookingID)
 );
 
 create table DayBookingDetails (
@@ -53,10 +53,10 @@ create table DayBookings (
 	DayBookingID    int identity not null,
 	BookingID       int          not null,
 	ConferenceDayID int          not null,
-	Participants    int          not null
+	Participants    int          not null default 1,
+	primary key (DayBookingID),
+	constraint PositiveDayParticipantsNo
 		check (Participants > 0)
-		default 1,
-	primary key (DayBookingID)
 );
 
 create table WorkshopBookingDetails (

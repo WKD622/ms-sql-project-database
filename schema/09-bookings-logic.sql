@@ -269,12 +269,6 @@ begin
 				on cd.ConferenceDayID = db.ConferenceDayID
 		where BookingID = @bookingID);
 	
-	if (select count(*) from @invoice) = 0
-	begin
-		raiserror('Wrong ID', 18, 0);
-		return;
-	end 
-	
 	declare @sum int = (select sum(Price) from @invoice);
 	
 	insert into @invoice (Product, Date, Time, Participants, Discount, Students, StudentDiscount, Price)
