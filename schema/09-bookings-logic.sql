@@ -177,16 +177,19 @@ create function generateInvoice (
 	Date date,
 	Time time,
 	Spaces int,
+	Discount decimal(5, 2),
 	Price money
 )
 as
 begin
-	insert into @invoice (Product, Date, Time, Spaces, Price)
+	insert into @invoice (Product, Date, Time, Spaces, Discount, Price)
 	(select
 			'Day' as Product,
 			Day as Date,
 			null as Time,
 			Participants as Spaces,
+			(100 * dbo.getDayBookingDiscount(DayBookingID))
+				as Discount,
 			(dbo.getDayBookingPrice(DayBookingID))
 				as Price
 		from DayBookings as db
@@ -199,6 +202,7 @@ begin
 			cd.Day as Date,
 			wt.StartTime as Time,
 			wb.Participants as Spaces,
+			0 as Discount,
 			wt.Price
 		from WorkshopBookings as wb
 			inner join WorkshopTerms as wt
@@ -211,8 +215,8 @@ begin
 	
 	declare @sum int = (select sum(Price) from @invoice);
 	
-	insert into @invoice (Product, Date, Time, Spaces, Price)
-		values (null, null, null, null, @sum);
+	insert into @invoice (Product, Date, Time, Spaces, Discount, Price)
+		values (null, null, null, null, null, @sum);
 	
 	return;
 end
