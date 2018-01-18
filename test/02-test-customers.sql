@@ -283,17 +283,6 @@ end try begin catch
 	print 'PASSED';
 end catch
 
----------------------------------------------------------------------------------------------------
-
-begin try
-	-- Błąd: za krótki login
-	exec addCompany 'nazwa', '0123456789', 'adres', 'telefon', 'company1@example.com', 'com', 0x00;
-	
-	raiserror('FAILED 2 22', 9, 0); return;
-end try begin catch
-	while @@trancount > 0 rollback
-	print 'PASSED';
-end catch
 	
 ---------------------------------------------------------------------------------------------------
 
@@ -301,7 +290,7 @@ end catch
 	-- Błąd: powtórzony login 
 	exec addCompany 'nazwa', '0123456789', 'adres', 'telefon', 'company1@example2.com', 'company1', 0x00;
 	
-	raiserror('FAILED 2 23', 9, 0); return;
+	raiserror('FAILED 2 22', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -313,7 +302,7 @@ end catch
 	-- Błąd: powtórzony email
 	exec addCompany 'nazwa', '0123456789', 'adres', 'telefon', 'company1@example2.com', 'company2', 0x00;
 	
-	raiserror('FAILED 2 24', 9, 0); return;
+	raiserror('FAILED 2 23', 9, 0); return;
 end try begin catch
 	while @@trancount > 0 rollback
 	print 'PASSED';
@@ -329,10 +318,10 @@ declare @company1 int = dbo.getCustomerForLogin('company1');
 if
 	dbo.isPerson(@company1) <> 0
 begin raiserror('FAILED 2 16', 9, 0); return; end
-else print 'PASSED 2 25';
+else print 'PASSED 2 24';
 
 -- Null: dla firmy nie działa
 if
 	dbo.asParticipant(@company1) <> null
-begin raiserror('FAILED 2 26', 9, 0); return; end
+begin raiserror('FAILED 2 25', 9, 0); return; end
 else print 'PASSED';
