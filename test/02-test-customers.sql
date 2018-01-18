@@ -286,7 +286,7 @@ end catch
 	
 ---------------------------------------------------------------------------------------------------
 
-	begin try
+begin try
 	-- Błąd: powtórzony login 
 	exec addCompany 'nazwa', '0123456789', 'adres', 'telefon', 'company1@example2.com', 'company1', 0x00;
 	
@@ -298,7 +298,7 @@ end catch
 
 ---------------------------------------------------------------------------------------------------
 
-	begin try
+begin try
 	-- Błąd: powtórzony email
 	exec addCompany 'nazwa', '0123456789', 'adres', 'telefon', 'company1@example2.com', 'company2', 0x00;
 	
