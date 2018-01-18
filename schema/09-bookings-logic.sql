@@ -42,6 +42,21 @@ go
 create procedure cancelBooking (
 	@bookingID int
 ) as
+
+Declare @daybookingID int
+
+While (select count(*) from DayBookings where BookingID = @bookingID) > 0
+Begin
+    Select Top 1 @daybookingID = DayBookingID From Daybookings where BookingID = @bookingID;
+    
+    While (select count(*) from WorkshopBookings where DayBookingID = @daybookingID) > 0
+    Begin
+	    delete WorkshopBookings where DayBookingID = @daybookingID;	    
+    End
+    
+    delete DayBookings where DayBookingID = @daybookingID;
+
+End
 	delete Bookings where BookingID = @bookingID;
 go
 
