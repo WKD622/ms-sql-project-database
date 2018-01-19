@@ -147,5 +147,7 @@ create table Prices (
 	Discount     decimal(3, 2) not null,
 	primary key (PriceID),
 	constraint InvalidPriceDiscount
-		check (Discount >= 0 and Discount <= 1)
+		check (Discount >= 0 and Discount <= 1),
+	constraint UniqueTill
+		unique (ConferenceID, Till)
 );
