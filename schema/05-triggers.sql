@@ -270,8 +270,8 @@ begin
 	
 	declare @lower int;
 	declare @upper int;
-	select @lower = max(Discount) from Prices where Till > @till;
-	select @upper = min(Discount) from Prices where Till < @till;
+	select @lower = max(Discount) from Prices where Till > @till and ConferenceID = @conferenceID;
+	select @upper = min(Discount) from Prices where Till < @till and ConferenceID = @conferenceID;
 	
 	if	(@lower is not null and @lower >= @discount) or
 		(@upper is not null and @upper <= @discount)
