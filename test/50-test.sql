@@ -13,7 +13,7 @@ begin try
 	--dodanie osoby 
 	exec dbo.addPerson 'firstname1', 'lastname1', 'adress1', '123456789', 'person1@gmail.com', 'person1log', 0x00;
 	--dodanie konferencji
-	exec dbo.addConference 'conf1', 100, '2018-02-10', '2018-02-17', 100, 0.2;
+	exec dbo.addConference 'conf1', 100, '2018-02-10', '2018-02-11', 100, 0.2;
 	--dodanie warsztatu
 	exec dbo.addWorkshop 'workshop1', 'description1';
 	
