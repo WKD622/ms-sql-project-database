@@ -247,7 +247,33 @@ begin
 		(@capacity is null and @participantLimit is not null)
 	begin
 		rollback;
-		raiserror('Capacity of WorkshopTerm is bigger than limit of participants for its ConferenceDay', 18, 0);
+		raiserror('Capacity of this workshop is bigger than the limit of participants for its day', 18, 0);
+	end
+end
+go
+
+/**
+ * Sprawdza czy wpisywane progi cen są dobrze posortowane.
+ */
+create trigger PricesOrder
+	on Prices
+	for insert, update as
+begin
+	declare @conferenceID int;
+	declare @till int;
+	select @conferenceID = ConferenceID, @till = Till
+		from inserted;
+	
+	declare @lower int;
+	declare @upper int;
+	select @lower = max(Discount) from Prices where Till > @till;
+	select @upper = min(Discount) from Prices where Till < @till;
+	
+	if	(@lower is not null and @lower >= @discount) or
+		(@upper is not null and @upper <= @discount)
+	begin
+		rollback;
+		raiserror('Invalid order of discounts', 18, 0);
 	end
 end
 go
