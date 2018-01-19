@@ -253,6 +253,7 @@ begin
 end
 go
 
+drop type TimeTable;
 create type TimeTable as table (
 	TimeFrom time,
 	TimeTo time
