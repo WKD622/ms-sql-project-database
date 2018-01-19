@@ -253,20 +253,26 @@ begin
 end
 go
 
+create type TimeTable as table (
+	TimeFrom time,
+	TimeTo time
+);
+go
+
 /**
  * Zwraca prawdę jeśli dany zakres czasów zachodzi
  * na dowolny z @times.
  */
 create function isTimeConflict (
 	@from time, @to time,
-	@times table (
-		From time,
-		To time
-	)
-) returns int
+	@times TimeTable readonly
+) returns bit
 as
 begin
-	return exists (select * from @times
-		where From < @to and To > @from);
+	if exists (select * from @times
+		where TimeFrom < @to and TimeTo > @from)
+		return 1;
+	
+	return 0;
 end
 go
