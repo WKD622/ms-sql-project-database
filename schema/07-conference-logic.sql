@@ -239,7 +239,7 @@ go
 /**
  * Zwraca ID dnia konferencji dla podanej daty.
  */
-create function getDayForDate(
+create function getDayForDate (
 	@conferenceID int,
 	@date date
 ) returns int
@@ -250,5 +250,23 @@ begin
 		where
 			ConferenceID = @conferenceID and
 			Day = @date);
+end
+go
+
+/**
+ * Zwraca prawdę jeśli dany zakres czasów zachodzi
+ * na dowolny z @times.
+ */
+create function isTimeConflict (
+	@from time, @to time,
+	@times table (
+		From time,
+		To time
+	)
+) returns int
+as
+begin
+	return exists (select * from @times
+		where From < @to and To > @from);
 end
 go

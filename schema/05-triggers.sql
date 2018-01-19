@@ -260,8 +260,12 @@ create trigger PricesOrder
 	for insert, update as
 begin
 	declare @conferenceID int;
-	declare @till int;
-	select @conferenceID = ConferenceID, @till = Till
+	declare @till date;
+	declare @discount decimal(3,2);
+	
+	select	@conferenceID = ConferenceID,
+			@till = Till,
+			@discount = Discount
 		from inserted;
 	
 	declare @lower int;
