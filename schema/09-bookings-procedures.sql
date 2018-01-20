@@ -38,6 +38,8 @@ go
 
 /**
  * Usuwa zamówienie.
+ * 
+ * @tested dla klienta indywidualnego, ale dla firmy powinno działać też na 99.9%
  */
 create procedure cancelBooking (
 	@bookingID int
@@ -58,6 +60,8 @@ go
 
 /**
  * Dodaje nr legitymacji studenckiej dla zamówienia.
+ * 
+ * @tested
  */
 create procedure addBookingStudentID (
 	@dayBookingID int,
