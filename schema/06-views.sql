@@ -6,6 +6,49 @@
  */
 
 /**
+ * Widok przedstawiąjący listę dni konferencji
+ * wraz z podsumowaniem zajętości miejsc.
+ * 
+ * @tested
+ */
+create view ConferenceDaysPlaces as
+	select
+			cd.ConferenceID,
+			cd.ConferenceDayID,
+			cd.Day,
+			c.ParticipantLimit,
+			(isnull(sum(Participants), 0))
+				as BookedPlaces,
+			(c.ParticipantLimit - isnull(sum(Participants), 0))
+				as AvailablePlaces
+		from ConferenceDays as cd
+			left join Conferences as c
+				on c.ConferenceID = cd.ConferenceID
+			left join DayBookings as db
+				on db.ConferenceDayID = cd.ConferenceDayID
+		group by cd.ConferenceID, cd.ConferenceDayID,
+			cd.Day, c.ParticipantLimit;
+go
+
+/**
+ * Widok przedstawiąjący listę terminów warsztatów
+ * wraz z podsumowaniem zajętości miejsc.
+ */
+create view WorkshopTermsPlaces as
+	select
+			wt.WorkshopTermID,
+			wt.Capacity,
+			(isnull(sum(Participants), 0))
+				as BookedPlaces,
+			(wt.Capacity - isnull(sum(Participants), 0))
+				as AvailablePlaces
+		from WorkshopTerms as wt
+			left join WorkshopBookings as wb
+				on wt.WorkshopTermID = wb.WorkshopTermID
+		group by wt.WorkshopTermID, wt.Capacity;
+go
+
+/**
  * Widok podsumowujący klientów.
  * 
  * @column IsCompany

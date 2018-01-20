@@ -136,7 +136,7 @@ go
  * 
  * @tested
  */
-create function getAvailableSpacesForDay (
+create function getAvailablePlacesForDay (
 	@conferenceDayID int
 ) returns int
 as
@@ -162,7 +162,7 @@ go
  * 
  * @tested
  */
-create function getAvailableSpacesForWorkshop (
+create function getAvailablePlacesForWorkshop (
 	@workshopTermID int
 ) returns int
 as
