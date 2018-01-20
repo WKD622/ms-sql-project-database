@@ -150,15 +150,16 @@ go
  * 
  * @tested
  */
-
-create view PaidBookings as 
-		select b.BookingID, 
-		b.BookingDate, 
-		b.DueDate, 
-		b.PaymentDate, 
-		(datediff(day, DueDate, getdate())) as 'Payment dates'
+create view PaidBookings as
+	select
+			b.BookingID,
+			b.BookingDate,
+			b.DueDate,
+			b.PaymentDate,
+			(datediff(day, DueDate, getdate()))
+				as PaymentDates
 		from Bookings as b
-			where b.PaymentDate is not null
+		where b.PaymentDate is not null;
 go
 
 /**
