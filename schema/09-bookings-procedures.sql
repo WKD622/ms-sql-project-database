@@ -26,7 +26,7 @@ go
 /**
  * Dodaje zamówienie.
  * 
- * @tested oprócz output
+ * @tested
  */
 create procedure addBooking (
 	@customerID int,
