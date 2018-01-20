@@ -281,3 +281,29 @@ begin
 	end
 end
 go
+
+/**
+ * Sprawdza czy ilość dodanych nr. nr. legitymacji dla
+ * zamówienia jest <= ilości miejsc w zamówieniu dnia.
+ */
+create trigger StudentsCountDayBooking
+	on BookingStudentIDs
+	for insert as
+begin
+	declare @students int;
+	declare @limit int;
+	select @students = count(*)
+		from BookingStudentIDs
+		where DayBookingID = (select DayBookingID from inserted);
+	
+	select @limit = Participants
+		from DayBookings
+		where DayBookingID = (select DayBookingID from inserted);
+	
+	if (@students > @limit)
+	begin
+		rollback;
+		raiserror('Too many participants', 18, 0);
+	end
+end
+go
