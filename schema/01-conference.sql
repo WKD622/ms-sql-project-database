@@ -30,7 +30,7 @@
  */
 create table Conferences (
 	ConferenceID     int identity  not null,
-	Name             varchar(255)  not null unique,
+	Name             nvarchar(255)  not null unique,
 	Price            money         not null,
 	StartDay         date          not null,
 	EndDay           date          not null,
@@ -86,8 +86,8 @@ create table ConferenceDays (
  */
 create table Workshops (
 	WorkshopID  int identity not null,
-	Name        varchar(255) not null unique,
-	Description varchar(1023) null,
+	Name        nvarchar(255) not null unique,
+	Description nvarchar(1023) null,
 	primary key (WorkshopID),
 	constraint WorkshopNameEmpty
 		check (Name <> ''),

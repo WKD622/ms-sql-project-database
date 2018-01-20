@@ -71,10 +71,14 @@ create procedure addBookingStudentID (
 		values (@dayBookingID, @studentID);
 go
 
+create type CompanyParticipants as table (
+	FirstName nvarchar(255),
+	LastName nvarchar(255)
+);
+go
+
 /**
  * Dodaje rezerwację dnia.
- * 
- * @tested
  */
 create procedure addDayBooking (
 	@bookingID       int,
@@ -126,11 +130,22 @@ create procedure addWorkshopBooking (
 	);
 go
 
+/*
 create type CompanyParticipants as table (
-FirstName varchar(255)
-LastName varchar(255)
-)
+	FirstName nvarchar(255),
+	LastName nvarchar(255)
+);
+go
 
 create procedure addParticipants (
 	
-)
+) as
+	insert into WorkshopBookings (
+		WorkshopTermID, DayBookingID,
+		Participants
+	) values (
+		@workshopTermID, @dayBookingID,
+		@participants
+	);
+go
+*/
