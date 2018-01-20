@@ -86,7 +86,7 @@ go
 /**
  * Dodaje instancję wybranego warsztatu.
  * 
- * @tested oprócz output
+ * @tested
  */
 create procedure addWorkshopTerm (
 	@workshopID int,
