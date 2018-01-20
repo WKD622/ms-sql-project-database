@@ -41,7 +41,7 @@ go
  * @tested
  */
 create procedure addConference (
-	@name             varchar(255),
+	@name             nvarchar(255),
 	@price            money,
 	@startDay         date,
 	@endDay           date,
@@ -73,8 +73,8 @@ go
  * @tested
  */
 create procedure addWorkshop (
-	@name        varchar(255),
-	@description varchar(255) = null
+	@name        nvarchar(255),
+	@description nvarchar(255) = null
 ) as
 	insert into Workshops (
 		Name, Description
@@ -186,7 +186,7 @@ go
  * @tested
  */
 create function getConferenceForName (
-	@name varchar(255)
+	@name nvarchar(255)
 ) returns int
 as
 begin
@@ -206,7 +206,7 @@ go
  * @tested
  */
 create function getWorkshopForName (
-	@name varchar(255)
+	@name nvarchar(255)
 ) returns int
 as
 begin

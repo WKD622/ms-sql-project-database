@@ -105,7 +105,7 @@ create function generateInvoice (
 	@bookingID int
 ) returns
 @invoice table(
-	Product varchar(64),
+	Product nvarchar(64),
 	Date date,
 	Time time,
 	Participants int,

@@ -124,8 +124,8 @@ go
 
 /*
 create type CompanyParticipants as table (
-	FirstName varchar(255),
-	LastName varchar(255)
+	FirstName nvarchar(255),
+	LastName nvarchar(255)
 );
 go
 

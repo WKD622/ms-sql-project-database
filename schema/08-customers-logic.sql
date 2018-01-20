@@ -12,12 +12,12 @@
  * @tested
  */
 create procedure addCompany (
-	@name     varchar(255),
+	@name     nvarchar(255),
 	@nip      char(10),
-	@address  varchar(255),
-	@phone    varchar(32),
-	@email    varchar(255),
-	@login    varchar(64),
+	@address  nvarchar(255),
+	@phone    nvarchar(32),
+	@email    nvarchar(255),
+	@login    nvarchar(64),
 	@password varbinary(255)
 ) as
 	set xact_abort on;
@@ -48,12 +48,12 @@ go
  * @tested
  */
 create procedure addPerson (
-	@firstName varchar(255),
-	@lastName  varchar(255),
-	@address   varchar(255),
-	@phone     varchar(32),
-	@email     varchar(255),
-	@login     varchar(64),
+	@firstName nvarchar(255),
+	@lastName  nvarchar(255),
+	@address   nvarchar(255),
+	@phone     nvarchar(32),
+	@email     nvarchar(255),
+	@login     nvarchar(64),
 	@password  varbinary(255),
 	@studentID char(6) = null
 ) as
@@ -103,8 +103,8 @@ go
  */
 create procedure addCompanyParticipant (
 	@companyID int,
-	@firstName varchar(255),
-	@lastName  varchar(255),
+	@firstName nvarchar(255),
+	@lastName  nvarchar(255),
 	@studentID char(6) = null
 ) as
 	set xact_abort on;
@@ -205,7 +205,7 @@ go
  * @tested
  */
 create function getCustomerForLogin (
-	@login varchar(64)
+	@login nvarchar(64)
 ) returns int
 as
 begin

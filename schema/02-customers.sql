@@ -24,10 +24,10 @@
  */
 create table Customers (
 	CustomerID int identity   not null,
-	Address    varchar(255)   not null,
-	Phone      varchar(32)    not null,
-	Email      varchar(255)   not null unique,
-	Login      varchar(64)    not null unique,
+	Address    nvarchar(255)   not null,
+	Phone      nvarchar(32)    not null,
+	Email      nvarchar(255)   not null unique,
+	Login      nvarchar(64)    not null unique,
 	Password   varbinary(255) not null,
 	primary key (CustomerID),
 	constraint AddressEmpty
@@ -53,7 +53,7 @@ create table Customers (
 create table Companies (
 	CustomerID  int          not null,
 	NIP         char(10)     not null unique,
-	CompanyName varchar(255) not null,
+	CompanyName nvarchar(255) not null,
 	primary key (CustomerID),
 	constraint InvalidNIP
 		check (NIP not like '%[^0-9]%'),
@@ -118,8 +118,8 @@ create table StudentIDs (
  */
 create table Participants (
 	ParticipantID int identity not null,
-	FirstName     varchar(255) not null,
-	LastName      varchar(255) not null,
+	FirstName     nvarchar(255) not null,
+	LastName      nvarchar(255) not null,
 	primary key (ParticipantID),
 	constraint FirstNameEmpty
 		check (FirstName <> ''),
