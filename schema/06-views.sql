@@ -142,6 +142,27 @@ create view UnpaidBookings as
 go
 
 /**
+ * Widok rezerwacji, które zostały zapłacone
+ * oraz ich termin płatności się zakończył.
+ * 
+ * @column Delay
+ *     ilość dni spóźnienia
+ * 
+ * @tested
+ */
+
+create view PaidBookings as 
+		select b.BookingID, 
+		b.BookingDate, 
+		b.DueDate, 
+		b.PaymentDate, 
+		(datediff(day, DueDate, getdate())) as 'Payment dates'
+		from Bookings as b
+			where b.PaymentDate is not null
+		order by PaymentDate desc 
+go
+
+/**
  * Widok podsumowania rezerwacji warsztatów.
  * 
  * @column CustomerID
