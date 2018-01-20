@@ -159,7 +159,6 @@ create view PaidBookings as
 		(datediff(day, DueDate, getdate())) as 'Payment dates'
 		from Bookings as b
 			where b.PaymentDate is not null
-		order by PaymentDate desc 
 go
 
 /**
