@@ -283,6 +283,31 @@ end
 go
 
 /**
+ * Sprawdza czy wpisany próg ma datę przed datą konferecji.
+ */
+create trigger PricesTill
+	on Prices
+	for insert, update as
+begin
+	declare @conferenceID int;
+	declare @till date;
+	
+	select	@conferenceID = ConferenceID,
+			@till = Till
+		from inserted;
+	
+	declare @conferenceDate date;
+	select @conferenceDate = StartDay from Conferences where ConferenceID = @conferenceID;
+	
+	if (@till >= @conferenceDate)
+	begin
+		rollback;
+		raiserror('Till is not before the conference.', 18, 0);
+	end
+end
+go
+
+/**
  * Sprawdza czy ilość dodanych nr. nr. legitymacji dla
  * zamówienia jest <= ilości miejsc w zamówieniu dnia.
  * 
