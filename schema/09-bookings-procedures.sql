@@ -121,3 +121,12 @@ create procedure addWorkshopBooking (
 		@participants
 	);
 go
+
+create type CompanyParticipants as table (
+FirstName varchar(255)
+LastName varchar(255)
+)
+
+create procedure addParticipants (
+	
+)

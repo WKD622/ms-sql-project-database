@@ -238,6 +238,8 @@ go
 
 /**
  * Zwraca ID dnia konferencji dla podanej daty.
+ * 
+ * @tested
  */
 create function getDayForDate (
 	@conferenceID int,
