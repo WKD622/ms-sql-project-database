@@ -184,6 +184,8 @@ go
 
 /**
  * Zwróć ID uczestnika dla ID osoby fizycznej.
+ * 
+ * @tested
  */
 create function asParticipant (
 	@customerID int
