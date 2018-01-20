@@ -153,6 +153,8 @@ go
 
 /**
  * Sprawdź czy uczestnik jest studentem.
+ * 
+ * @tested dla klientów indywidualnych, nie wiadomo co z tymi ktorzy się dodadzą w ramach Company Participants
  */
 create function isStudent (
 	@participantID int
@@ -168,6 +170,8 @@ go
 
 /**
  * Pobierz nr legitymacji studenckiej.
+ * 
+ *  @tested dla klientów indywidualnych, nie wiadomo co z tymi ktorzy się dodadzą w ramach Company Participants
  */
 create function getStudentID (
 	@participantID int
