@@ -9,7 +9,7 @@ declare @dayBookingID int;
 declare @workshopID int;
 declare @workshopTermID int;
 
--- dodanie osoby 
+-- dodanie osoby
 exec dbo.addPerson 'firstname1', 'lastname1', 'adress1', '123456789', 'person1@gmail.com', 'person1log', 0x00;
 -- dodanie konferencji
 exec dbo.addConference 'conf1', 100, '2018-02-10', '2018-02-11', 100, 0.2;
@@ -28,11 +28,11 @@ exec dbo.addWorkshopTerm @workshopID, @dayIdCorrect, 50, '10:00', '12:00', 20, @
 -- dodaje booking
 exec dbo.addBooking @customerID, @bookingID output;
 
--- dodaje dayBooking 
+-- dodaje dayBooking
 exec dbo.addDayBooking @bookingID, @dayIdCorrect, @dayBookingID output;
 
 begin try
-	-- dodaje workshopbooking na zly dzien - powinno nie działać
+	-- dodaje workshopbooking na zly dzien -- powinno nie działać
 	exec dbo.addWorkshopBooking @dayIdIncorrect, @workshopTermID;
 	
 	raiserror('FAILED 50', 9, 0); return;

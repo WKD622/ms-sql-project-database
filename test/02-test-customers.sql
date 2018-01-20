@@ -60,18 +60,6 @@ end catch
 ---------------------------------------------------------------------------------------------------
 
 begin try
-	-- Błąd: zły telefon
-	exec addPerson 'imię', 'nazwisko', 'adres', '6012a5678', 'person1@example.com', 'person1', 0x00;
-	
-	raiserror('FAILED 2 4', 9, 0); return;
-end try begin catch
-	while @@trancount > 0 rollback
-	print 'PASSED 2 2';
-end catch
-
----------------------------------------------------------------------------------------------------
-
-begin try
 	-- Błąd: zły email
 	exec addPerson 'imię', 'nazwisko', 'adres', 'telefon', 'person1', 'person1', 0x00;
 	
