@@ -97,16 +97,24 @@ create procedure addPerson (
 go
 
 /**
- * Dodaje uczestnika z danej firmy.
+ * Dodaje uczestnika z danej firmy jeśli nie istnieje.
  * 
  * @tested
  */
-create procedure addCompanyParticipant (
+create procedure ensureCompanyParticipant (
 	@companyID int,
 	@firstName nvarchar(255),
 	@lastName  nvarchar(255),
-	@studentID char(6) = null
+	@studentID char(6) = null,
+	
+	@participantID int = null output
 ) as
+	select @participantID = dbo.getCompanyParticipant(
+		@companyID, @firstName, @lastName, @studentID);
+	
+	if @participantID is not null
+		return;
+	
 	set xact_abort on;
 	begin transaction;
 		insert into Participants (
@@ -114,6 +122,8 @@ create procedure addCompanyParticipant (
 		) values (
 			@firstName, @lastName
 		);
+		
+		select @participantID = scope_identity();
 		
 		declare @pid int = scope_identity();
 		
@@ -132,6 +142,30 @@ create procedure addCompanyParticipant (
 			);
 		end
 	commit transaction;
+go
+
+/**
+ * 
+ */
+create function getCompanyParticipant (
+	@companyID int,
+	@firstName nvarchar(255),
+	@lastName  nvarchar(255),
+	@studentID char(6) = null
+) returns int
+as
+begin
+	return (select p.ParticipantID
+		from Participants as p
+			inner join CompanyParticipants as cp
+				on p.ParticipantID = cp.ParticipantID
+			left join StudentIDs as s
+				on s.ParticipantID = p.ParticipantID
+		where FirstName = @firstName and
+			LastName = @lastName and
+			cp.CompanyID = @companyID and
+			s.StudentID = @studentID);
+end
 go
 
 /**

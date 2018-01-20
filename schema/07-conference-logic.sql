@@ -263,19 +263,16 @@ create type TimeTable as table (
 go
 
 /**
- * Zwraca prawdę jeśli dany zakres czasów zachodzi
- * na dowolny z @times.
+ * Zwraca ilość konfliktów pomiędzy danym zakresem
+ * a zakresami z @times.
  */
-create function isTimeConflict (
+create function countTimeConflicts (
 	@from time, @to time,
 	@times TimeTable readonly
-) returns bit
+) returns int
 as
 begin
-	if exists (select * from @times
-		where TimeFrom < @to and TimeTo > @from)
-		return 1;
-	
-	return 0;
+	return (select count(*) from @times
+		where TimeFrom < @to and TimeTo > @from);
 end
 go

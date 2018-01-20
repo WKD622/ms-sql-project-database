@@ -71,12 +71,6 @@ create procedure addBookingStudentID (
 		values (@dayBookingID, @studentID);
 go
 
-create type CompanyParticipants as table (
-	FirstName nvarchar(255),
-	LastName nvarchar(255)
-);
-go
-
 /**
  * Dodaje rezerwację dnia.
  */
@@ -102,12 +96,15 @@ create procedure addDayBooking (
 	
 	if dbo.isPerson(@customerID) = 1
 	begin
-		declare @studentID char(6) = dbo.getStudentID(dbo.asParticipant(@customerID));
+		declare @participantID int = dbo.asParticipant(@customerID);
+		declare @studentID char(6) = dbo.getStudentID(@participantID);
 		
 		if @studentID is not null
 		begin
 			exec addBookingStudentID @dayBookingID, @studentID;
 		end
+		
+		exec fillDayBooking @dayBookingID, @participantID;
 	end
 go
 
@@ -117,9 +114,10 @@ go
  * @tested
  */
 create procedure addWorkshopBooking (
-	@dayBookingID   int,
-	@workshopTermID int,
-	@participants   int = 1
+	@dayBookingID      int,
+	@workshopTermID    int,
+	@workshopBookingID int = null output,
+	@participants      int = 1
 ) as
 	insert into WorkshopBookings (
 		WorkshopTermID, DayBookingID,
@@ -128,24 +126,45 @@ create procedure addWorkshopBooking (
 		@workshopTermID, @dayBookingID,
 		@participants
 	);
-go
-
-/*
-create type CompanyParticipants as table (
-	FirstName nvarchar(255),
-	LastName nvarchar(255)
-);
-go
-
-create procedure addParticipants (
 	
+	declare @customerID int = (select CustomerID
+		from Bookings as b
+			inner join DayBookings as db
+				on db.BookingID = b.BookingID
+		where DayBookingID = @dayBookingID);
+	
+	if dbo.isPerson(@customerID) = 1
+	begin
+		declare @participantID int = dbo.asParticipant(@customerID);
+		declare @studentID char(6) = dbo.getStudentID(@participantID);
+		
+		if @studentID is not null
+		begin
+			exec addBookingStudentID @dayBookingID, @studentID;
+		end
+		
+		exec fillWorkshopBooking @dayBookingID, @participantID;
+	end
+go
+
+create procedure fillDayBooking (
+	@dayBookingID  int,
+	@participantID int
 ) as
-	insert into WorkshopBookings (
-		WorkshopTermID, DayBookingID,
-		Participants
+	insert into DayBookingDetails (
+		DayBookingID, ParticipantID
 	) values (
-		@workshopTermID, @dayBookingID,
-		@participants
+		@dayBookingID, @participantID
 	);
 go
-*/
+
+create procedure fillWorkshopBooking (
+	@workshopBookingID int,
+	@participantID     int
+) as
+	insert into WorkshopBookingDetails (
+		WorkshopBookingID, ParticipantID
+	) values (
+		@workshopBookingID, @participantID
+	);
+go
