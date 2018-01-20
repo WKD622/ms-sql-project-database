@@ -285,6 +285,8 @@ go
 /**
  * Sprawdza czy ilość dodanych nr. nr. legitymacji dla
  * zamówienia jest <= ilości miejsc w zamówieniu dnia.
+ * 
+ * @tested
  */
 create trigger StudentsCountDayBooking
 	on BookingStudentIDs

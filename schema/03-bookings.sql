@@ -9,7 +9,6 @@
 create table BookingStudentIDs (
 	DayBookingID int     not null,
 	StudentID    char(6) not null,
-	primary key (DayBookingID),
 	constraint BookingStudentIDsUnique
 		unique (DayBookingID, StudentID),
 	constraint InvalidBookingStudentID
