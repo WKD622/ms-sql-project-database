@@ -268,8 +268,8 @@ begin
 			@discount = Discount
 		from inserted;
 	
-	declare @lower int;
-	declare @upper int;
+	declare @lower decimal(3,2);
+	declare @upper decimal(3,2);
 	select @lower = max(Discount) from Prices where Till > @till and ConferenceID = @conferenceID;
 	select @upper = min(Discount) from Prices where Till < @till and ConferenceID = @conferenceID;
 	
