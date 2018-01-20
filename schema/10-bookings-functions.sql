@@ -48,6 +48,8 @@ go
 
 /**
  * Zwraca ilość studentów z danej rezerwacji dnia.
+ * 
+ * @tested
  */
 create function getDayBookingStudentCount (
 	@dayBookingID int
