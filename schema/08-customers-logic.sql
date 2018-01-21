@@ -146,7 +146,7 @@ go
 
 /**
  * 
- */
+ *
 create function getCompanyParticipant (
 	@companyID int,
 	@firstName nvarchar(255),
@@ -166,7 +166,7 @@ begin
 			cp.CompanyID = @companyID and
 			s.StudentID = @studentID);
 end
-go
+go*/
 
 /**
  * Sprawdź czy dany klient jest osobą fizyczną czy firmą.
@@ -188,7 +188,7 @@ go
 /**
  * Sprawdź czy uczestnik jest studentem.
  * 
- * @tested dla klientów indywidualnych, nie wiadomo co z tymi ktorzy się dodadzą w ramach Company Participants
+ * @tested
  */
 create function isStudent (
 	@participantID int
@@ -205,7 +205,7 @@ go
 /**
  * Pobierz nr legitymacji studenckiej.
  * 
- *  @tested dla klientów indywidualnych, nie wiadomo co z tymi ktorzy się dodadzą w ramach Company Participants
+ * @tested
  */
 create function getStudentID (
 	@participantID int

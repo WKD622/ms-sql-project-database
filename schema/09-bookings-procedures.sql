@@ -52,6 +52,12 @@ create procedure cancelBooking (
 				from DayBookings
 				where BookingID = @bookingID);
 	
+	delete BookingStudentIDs
+		where DayBookingID in
+			(select DayBookingID
+				from DayBookings
+				where BookingID = @bookingID);
+	
 	delete DayBookings
 		where BookingID = @bookingID;
 	
@@ -149,6 +155,9 @@ create procedure addWorkshopBooking (
 	end
 go
 
+/**
+ * Wypełnia dane uczestnika dla rezerwacji dnia.
+ */
 create procedure fillDayBooking (
 	@dayBookingID  int,
 	@participantID int
@@ -160,6 +169,9 @@ create procedure fillDayBooking (
 	);
 go
 
+/**
+ * Wypełnia dane uczestnika dla rezerwacji warsztatu.
+ */
 create procedure fillWorkshopBooking (
 	@workshopBookingID int,
 	@participantID     int
