@@ -125,12 +125,10 @@ create procedure ensureCompanyParticipant (
 		
 		select @participantID = scope_identity();
 		
-		declare @pid int = scope_identity();
-		
 		insert into CompanyParticipants (
 			ParticipantID, CompanyID
 		) values (
-			@pid, @companyID
+			@participantID, @companyID
 		);
 		
 		if @studentID is not null
@@ -138,7 +136,7 @@ create procedure ensureCompanyParticipant (
 			insert into StudentIDs (
 				ParticipantID, StudentID
 			) values (
-				@pid, @studentID
+				@participantID, @studentID
 			);
 		end
 	commit transaction;
@@ -146,7 +144,7 @@ go
 
 /**
  * 
- *
+ */
 create function getCompanyParticipant (
 	@companyID int,
 	@firstName nvarchar(255),
@@ -166,7 +164,7 @@ begin
 			cp.CompanyID = @companyID and
 			s.StudentID = @studentID);
 end
-go*/
+go
 
 /**
  * Sprawdź czy dany klient jest osobą fizyczną czy firmą.
