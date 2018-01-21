@@ -334,3 +334,47 @@ begin
 	end
 end
 go
+
+/**
+ * Sprawdza czy uczestnik nie zapisuje się na
+ * zachodzące warsztaty.
+ * 
+ * @tested
+ */
+create trigger OverlappingWorkshops
+	on WorkshopBookingDetails
+	for insert, update as
+begin
+	declare @from time;
+	declare @to time;
+	declare @dayID int;
+	declare @times TimeTable;
+	
+	select @from = StartTime, @to = EndTime, @dayID = DayID
+		from WorkshopTerms as wt
+			inner join WorkshopBookings as wb
+				on wb.WorkshopTermID = wt.WorkshopTermID
+		where WorkshopBookingID = (select WorkshopBookingID from inserted);
+	
+	insert into @times (TimeFrom, TimeTo)
+	(select StartTime, EndTime
+		from WorkshopTerms as wt
+			inner join WorkshopBookings as wb
+				on wb.WorkshopTermID = wt.WorkshopTermID
+			inner join WorkshopBookingDetails as wbd
+				on wb.WorkshopBookingID = wbd.WorkshopBookingID
+		where
+			-- the same participant
+			ParticipantID = (select ParticipantID from inserted) and
+			-- the same day
+			DayID = @dayID and
+			-- do not count current booking
+			wb.WorkshopBookingID <> (select WorkshopBookingID from inserted));
+	
+	if dbo.countTimeConflicts(@from, @to, @times) > 0
+	begin
+		rollback;
+		raiserror('Workshops are overlapping', 18, 0);
+	end
+end
+go

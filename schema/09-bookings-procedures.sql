@@ -127,6 +127,8 @@ create procedure addWorkshopBooking (
 		@participants
 	);
 	
+	select @workshopBookingID = scope_identity();
+	
 	declare @customerID int = (select CustomerID
 		from Bookings as b
 			inner join DayBookings as db
@@ -143,7 +145,7 @@ create procedure addWorkshopBooking (
 			exec addBookingStudentID @dayBookingID, @studentID;
 		end
 		
-		exec fillWorkshopBooking @dayBookingID, @participantID;
+		exec fillWorkshopBooking @workshopBookingID, @participantID;
 	end
 go
 
